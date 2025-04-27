@@ -1,0 +1,26 @@
+// src/components/CardItem.jsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const CardItem = ({ path, img, title, text, subtext, footerNote }) => {
+  return (
+    <div className="col-md-6 col-lg-4 mb-4">
+      <Link to={path} className="text-decoration-none text-dark">
+        <div className="card h-100 shadow-sm">
+          <div className="card-body">
+            <div className="mb-3">
+              <img src={img} alt={`${title} Logo`} className="img-fluid" style={{ maxHeight: '40px' }} />
+            </div>
+            <h3 className="card-title">{title}</h3>
+            <p className="card-text small-text">{text}<br />{subtext}</p>
+          </div>
+          <div className="card-footer bg-light">
+            <small className="text-muted">{footerNote}</small>
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
+};
+
+export default CardItem;
