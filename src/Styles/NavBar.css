@@ -1,4 +1,4 @@
-/* Light theme (default) */
+
 :root {
   --bg-color: #ffffff;
   --text-color: #000000;
@@ -6,7 +6,6 @@
   --nav-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Dark theme */
 .dark-theme {
   --bg-color: #121212;
   --text-color: #ffffff;
@@ -42,6 +41,7 @@ body {
   color: var(--text-color) !important;
   opacity: 0.8;
 }
+
 
 .custom-navbar .navbar-nav .nav-link {
   color: var(--text-color) !important;

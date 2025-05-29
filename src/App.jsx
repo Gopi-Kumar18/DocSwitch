@@ -8,7 +8,7 @@ import PrivacyPolicy from './Pages/PrivacyPolicy';
 import TermsAndConditions from './Pages/TermsAndConditions';
 import FAQs from './Pages/FAQs';
 import DownloadPage from './Pages/DownloadPage';
-// import ContactUs from './Pages/ContactUs.jsx';
+import ContactUs from './Pages/ContactUs.jsx';
 
 
 import PdfToDocx from './Components/PdfToDocx';
@@ -66,7 +66,7 @@ const AppContent = () => {
                 <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                 <Route path="/faqs" element={<FAQs />} />
                 <Route path="/download" element={<DownloadPage />} />
-                {/* <Route path="/contactus" element={<ContactUs />}/> */}
+                <Route path="/contact-us" element={<ContactUs />}/>
                  
 
                  {/*Conversion routes..*/}

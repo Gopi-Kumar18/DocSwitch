@@ -1,56 +1,40 @@
 
+
 import React, {useContext} from 'react';
 import { Link } from 'react-router-dom';
 import { ThemeContext } from '../otherComponents/ThemeContext';
 import '../Styles/Footer.css';
+import logo from '../assets/logo-1.png'; 
 
 const Footer = () => {
   const { darkMode } = useContext(ThemeContext);
   return (
-    <footer className={`footer ${darkMode ? 'dark-theme' : ''}`}>
+    <>
+     <footer
+      className={`footer ${darkMode ? 'dark-theme' : 'light-theme'}`}
+    >
       <div className="footer-container">
+
         
-        {/* DocSwitch Section with Wave */}
         <div className="footer-section">
           <div className="section-header">
-            <h3>DocSwitch</h3>
-            <div className="waterwave"></div>
+            <h3>Company</h3>
           </div>
           <ul>
             <li><Link to="/about-us">About Us</Link></li>
+            <li><Link to="/contact-us">Contact Us</Link></li>
             <li><Link to="/faqs">FAQs</Link></li>
+            <li><Link to="/features">Features</Link></li>
+           <li><Link to="/docswitch-web-developers">Developers</Link></li>
           </ul>
         </div>
 
-        {/* Products */}
-        <div className="footer-section">
-          <div className="section-header">
-            <h3>Products</h3>
-            <div className="waterwave"></div>
-          </div>
-          <ul>
-            <li><a href="/features">Features</a></li>
-            <li><a href="/developers">Developers</a></li>
-          </ul>
-        </div>
-
-        {/* Contact Us */}
-        <div className="footer-section">
-          <div className="section-header">
-            <h3>Contact Us</h3>
-            <div className="waterwave"></div>
-          </div>
-          <ul>
-            <li>Email: <a href="mailto:lovosotia@emcil.com">gptz1811@gmail.com</a></li>
-            <li>Phone: <a href="tel:+AOYSSSA5SJ5186">+91 6300965097</a></li>
-          </ul>
-        </div>
+       
 
         {/* Follow Us */}
-        <div className="footer-section">
+        <div className="footer-section follow-us-section">
           <div className="section-header">
             <h3>Follow Us</h3>
-            <div className="waterwave"></div>
           </div>
           <div className="social-media-links">
             <a
@@ -74,28 +58,43 @@ const Footer = () => {
             >
               <i className="fab fa-x-twitter"></i>
             </a>
+
+            <a
+              href="https://github.com/"
+              target="_blank"
+              rel="noopener noreferrer">
+              <i className="fab fa-github"></i>
+          </a>
+
           </div>
         </div>
-      </div>
 
-      {/* Footer Bottom Links (Privacy Policy & T&C) */}
-      <div className="footer-bottom">
-        <span>
-          <Link to="/privacy-policy">Privacy Policy</Link>
-        </span>
-        <Link to="/terms-and-conditions">Terms and Conditions</Link>
-      </div>
+        <div className="footer-section">
+          <div className="section-header">
+            <h3>Terms and Privacy</h3>
+           <ul>
+            <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+            <li><Link to="/terms-and-conditions">Terms And Conditions</Link></li>
+          </ul>
+          </div>
+        </div>
 
-
-      {/* <h1 class="footer-title">
-    <span>D</span><span>o</span><span>c</span><span>S</span><span>w</span><span>i</span><span>t</span><span>c</span><span>h</span>
-  </h1> }*/}
+    </div>
 
     </footer>
+
+    <footer>
+      <div className="footer-bottom" style={{
+            backgroundImage: `url(${logo})`,
+          }}>
+      </div>
+    </footer>
+    </>
   );
 };
 
 export default Footer;
+
 
 
 

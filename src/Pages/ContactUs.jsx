@@ -1,67 +1,161 @@
 import React, { useState } from "react";
+import axios from "axios";
+import "../Styles/ContactUs.css"; 
+import support from "../assets/support.png";
 
 const ContactUs = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    countryCode: "+91",
+    phone: "",
+    message: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const [feedbackMsg, setFeedbackMsg] = useState("");
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Submitted", formData);
-    setSubmitted(true);
+    setSubmitting(true);
+    setFeedbackMsg("");
+
+    try {
+     
+      const payload = {
+        enquiryType: "grievance",
+        ...formData,
+      };
+      await axios.post("http://localhost:3000/contact-us", payload);
+      setFeedbackMsg("Your grievance has been submitted successfully!");
+      setFormData({
+        fullName: "",
+        email: "",
+        countryCode: "+91",
+        phone: "",
+        message: "",
+      });
+    } catch (err) {
+      console.error(err);
+      setFeedbackMsg(
+        "Something went wrong. Please try again later or email us directly."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-center">Contact Us</h2>
-        {submitted ? (
-          <p className="text-green-500 text-center">Thank you! We'll get back to you soon.</p>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="block text-gray-700">Name</label>
+    <div className="contact-us-page">
+      <div className="contact-us-container">
+
+        <div className="contact-left">
+          <h2>Contact Us</h2>
+          <p>
+            For any queries, please reach out to us. Our Support team will get
+            back to you within 24 hours.
+          </p>
+          <ul className="static-contact-info">
+            <li>
+              <i className="fas fa-envelope"></i> gptz1811@gmail.com
+            </li>
+            <li>
+              <i className="fas fa-phone"></i> +91 6300965097
+            </li>
+          </ul>
+          <div className="illustration">
+
+            <img
+              src={support}
+              alt="Customer support illustration"
+            />
+          </div>
+        </div>
+
+        <div className="contact-right">
+          <h3 className="grievance-heading">Grievance Box</h3>
+
+          <form className="contact-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="fullName">Full Name *</label>
               <input
                 type="text"
-                name="name"
-                value={formData.name}
+                id="fullName"
+                name="fullName"
+                value={formData.fullName}
                 onChange={handleChange}
+                placeholder="Enter your full name"
                 required
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-blue-200"
               />
             </div>
-            <div className="mb-4">
-              <label className="block text-gray-700">Email</label>
+
+            <div className="form-group">
+              <label htmlFor="email">Email Address *</label>
               <input
                 type="email"
+                id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                placeholder="Enter your email address"
                 required
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring focus:ring-blue-200"
               />
             </div>
-            <div className="mb-4">
-              <label className="block text-gray-700">Message</label>
+
+            <div className="form-group phone-group">
+              <label htmlFor="phone">
+                Phone *
+                <span className="country-code-selector">
+                  <select
+                    name="countryCode"
+                    value={formData.countryCode}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="+91">IN +91</option>
+                    <option value="+1">US +1</option>
+                    <option value="+44">UK +44</option>
+                    {/* Add more codes if needed */}
+                  </select>
+                </span>
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Enter your phone number"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="message">Your message *</label>
               <textarea
+                id="message"
                 name="message"
+                rows="6"
+                placeholder="Type your grievance here"
                 value={formData.message}
                 onChange={handleChange}
                 required
-                className="w-full border border-gray-300 rounded-md px-3 py-2 h-24 focus:ring focus:ring-blue-200"
               ></textarea>
             </div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-            >
-              Send Message
-            </button>
+
+            <div className="form-group submit-group">
+              <button type="submit" disabled={submitting}>
+                {submitting ? "Sending..." : "Send Message"}
+              </button>
+            </div>
+
+            {feedbackMsg && <p className="feedback">{feedbackMsg}</p>}
           </form>
-        )}
+        </div>
       </div>
     </div>
   );
