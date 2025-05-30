@@ -34,13 +34,13 @@ import './Styles/App.css';
 
 const App = () => {
   return (
+
     <>
     <ThemeProvider>
     <Router>
       <AppContent />
     </Router>
     </ThemeProvider>
-    
     </>
     
   );

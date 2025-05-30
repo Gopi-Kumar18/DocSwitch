@@ -45,9 +45,7 @@ const Navbar = () => {
             <li className="nav-item">
               <a className="nav-link" href="#">Sign Up</a>
             </li>
-            {/* <li className="nav-item">
-              <a className="/" href="#">Contact Us</a>
-            </li> */}
+
             <li className="nav-item">
               <button 
                 className="theme-toggle-btn" 
