@@ -19,10 +19,14 @@ import PdfToExcel from './Components/PdfToExcel';
 import ExcelToCSV from './Components/ExcelToCSV';
 import PdfCompress from './Components/PdfCompress';
 import CreatePdf from './Components/CreatePdf.jsx';
+import SplitPDF from './Components/SplitPDF.jsx'
 import MergeDocumentsToPdf from './Components/MergeDocsToPdf';
 
+import OtherPdfTools from './WorkingPages/OtherPdfTools'
 
 import { ThemeProvider } from './otherComponents/ThemeContext';
+
+
 // import './otherComponents/ToolLinks.jsx';
 
 
@@ -70,6 +74,7 @@ const AppContent = () => {
                 <Route path="/faqs" element={<FAQs />} />
                 <Route path="/download" element={<DownloadPage />} />
                 <Route path="/contact-us" element={<ContactUs />}/>
+                <Route path="/other-pdf-tools" element={<OtherPdfTools />} />
                  
 
                  {/*Conversion routes..*/}
@@ -81,6 +86,7 @@ const AppContent = () => {
                 <Route path="/excel-to-csv" element={<ExcelToCSV />}/>
                 <Route path="/compress-pdf" element={<PdfCompress />} />
                 <Route path="/create-pdf" element={<CreatePdf />} />
+                <Route path="/split-pdf" element={<SplitPDF />} />
 
                 {/*Merge route*/}
                 <Route path="/merge-docs" element={<MergeDocumentsToPdf />} />

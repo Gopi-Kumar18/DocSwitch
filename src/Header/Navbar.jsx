@@ -25,7 +25,7 @@ const Navbar = () => {
   return (
     <nav className={`custom-navbar navbar navbar-expand-lg ${darkMode ? 'dark-mode' : ''}`}>
       <div className="container">
-        <a className="navbar-brand" href="/home">DocSwitch</a>
+        <a className="navbar-brand" href="/">DocSwitch</a>
         <button 
           className="navbar-toggler" 
           type="button" 

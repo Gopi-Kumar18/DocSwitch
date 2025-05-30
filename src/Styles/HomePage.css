@@ -83,19 +83,11 @@
   transition: color 0.5s ease-in-out;
 }
 
-/* .pdf-color {
-  color: red!important;
-}
-
-.docx-color {
-  color: darkblue!important;
-} */
-
-/* .default-color {
-  color: gold;
-} */
-
-
-
 .fade-out { opacity: 0; }
 .fade-in { opacity: 1; }
+
+.other-tools-btn-custom {
+  padding: 6px 18px; /* Adjust as needed for a small button */
+  font-size: 13px;   /* Adjust as needed */
+  border-radius: 5px; 
+}
