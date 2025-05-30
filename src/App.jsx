@@ -59,8 +59,11 @@ const AppContent = () => {
           <Routes>
 
                  {/* Redirect from root to home page */}
-                <Route path="/" element={<Navigate to="/home" replace />} />
-                <Route path="/home" element={<HomePage />} />
+
+                 {/* <Route path="/" element={<Navigate to="/home" replace />} />
+                <Route path="/home" element={<HomePage />} /> */}
+
+                <Route path="/" element={<HomePage />} />
                 <Route path="/about-us" element={<AboutUs />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
