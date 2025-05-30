@@ -1,25 +1,25 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation} from 'react-router-dom';
-import Navbar from './Components/Navbar';
 
-import HomePage from './Pages/HomePage';
+import Navbar from './Header/Navbar';
+
+import FAQs from './Pages/FAQs';
 import AboutUs from './Pages/AboutUs';
+import HomePage from './Pages/HomePage';
+import ContactUs from './Pages/ContactUs.jsx';
+import DownloadPage from './Pages/DownloadPage';
 import PrivacyPolicy from './Pages/PrivacyPolicy';
 import TermsAndConditions from './Pages/TermsAndConditions';
-import FAQs from './Pages/FAQs';
-import DownloadPage from './Pages/DownloadPage';
-import ContactUs from './Pages/ContactUs.jsx';
-
 
 import PdfToDocx from './Components/PdfToDocx';
 import DocxToPdf from './Components/DocxToPdf';
 import PdfToPptx from './Components/PdfToPptx';
 import PptxToPdf from './Components/PptxToPdf';
-import MergeDocumentsToPdf from './Components/MergeDocsToPdf';
 import PdfToExcel from './Components/PdfToExcel';
 import ExcelToCSV from './Components/ExcelToCSV';
 import PdfCompress from './Components/PdfCompress';
 import CreatePdf from './Components/CreatePdf.jsx';
+import MergeDocumentsToPdf from './Components/MergeDocsToPdf';
 
 
 import { ThemeProvider } from './otherComponents/ThemeContext';
