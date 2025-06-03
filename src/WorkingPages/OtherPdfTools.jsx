@@ -8,9 +8,13 @@ const OtherPdfTools = () => {
     <>
     <br />
     <div className="container my-5">
-      <h2 className="text-center mb-4">Anything To PDF</h2>
+      <h1 className="text-center mb-4">All PDF Tools</h1>
+      <h5 className="text-center">Utilize our powerful tools to edit, convert, and organize PDFs with ease and speed.</h5>
+
+      <br />
+
       <div className="row justify-content-center">
-        {CardData.slice(8,10).map((card, index) => (
+        {CardData.slice(8,11).map((card, index) => (
           <CardItem key={index} {...card} />
         ))}
       </div>

@@ -90,6 +90,14 @@ const CardData = [
     text: "Transform your PDF to Word format",
     subtext: "Edit text and reuse content in Word easily.",
     footerNote: "Click to convert"
+  },
+  {
+    path: "/ocr-pdf",
+    img: CompressPdflogo,
+    title: "Apply OCR",
+    text: "Transform your PDF to Word format",
+    subtext: "Edit text and reuse content in Word easily.",
+    footerNote: "Click to convert"
   }
 ];
 

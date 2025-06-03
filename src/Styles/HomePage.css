@@ -90,4 +90,16 @@
   padding: 6px 18px; /* Adjust as needed for a small button */
   font-size: 13px;   /* Adjust as needed */
   border-radius: 5px; 
+  background-color: lightblue;
 }
+
+
+/* body.dark-theme {
+  background: #121212;
+  color: #ffffff;
+}
+
+body.light-theme {
+  background: #ffffff;
+  color: #000000;
+} */

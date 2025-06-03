@@ -9,7 +9,8 @@ import {
   CompressPDFResult,
   SDKError,
   ServiceUsageError,
-  ServiceApiError
+  ServiceApiError,
+  ClientConfig
 } from "@adobe/pdfservices-node-sdk";
 
 dotenv.config();
@@ -20,12 +21,11 @@ export const adobeCompressor = async (req, res) => {
   let readStream   = null;
 
   try {
-    // 1. Validate upload
+
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded." });
     }
 
-    // 2. Ensure it's a PDF
     const inputFilePath = req.file.path;
     const info = await fileTypeFromFile(inputFilePath);
     if (!info || info.mime !== MimeType.PDF) {
@@ -33,35 +33,36 @@ export const adobeCompressor = async (req, res) => {
       return res.status(400).json({ error: "Only PDFs allowed." });
     }
 
-    // 3. Adobe credentials + client
+
     const credentials = new ServicePrincipalCredentials({
       clientId:     process.env.PDF_SERVICES_CLIENT_ID,
       clientSecret: process.env.PDF_SERVICES_CLIENT_SECRET
     });
-    const pdfServices = new PDFServices({ credentials });
 
-    // 4. Upload to Adobe
+    const clientConfig = new ClientConfig({ timeout: 60000 });
+    
+    const pdfServices = new PDFServices({ clientConfig, credentials });
+
+
     readStream = fs.createReadStream(inputFilePath);
     const inputAsset = await pdfServices.upload({
       readStream,
       mimeType: MimeType.PDF
     });
 
-    // 5. Create Compress job
     const job = new CompressPDFJob({ inputAsset });
 
-    // 6. Submit & poll
+   
     const pollingURL = await pdfServices.submit({ job });
     const result     = await pdfServices.getJobResult({
       pollingURL,
       resultType: CompressPDFResult
     });
 
-    // 7. Prepare output directory
     const downloadsDir = path.join(process.cwd(), "downloads", "compress");
     fs.mkdirSync(downloadsDir, { recursive: true, mode: 0o755 });
 
-    // 8. Unique output name
+
     const baseName       = path.parse(req.file.originalname).name;
     const safeBase       = baseName.replace(/[^a-zA-Z0-9-_]/g, "_").slice(0, 50);
     const randomHex      = crypto.randomBytes(4).toString("hex");
@@ -69,7 +70,6 @@ export const adobeCompressor = async (req, res) => {
     outputFilePath       = path.join(downloadsDir, outputFileName);
     const relativePath   = path.join("downloads", "compress", outputFileName);
 
-    // 9. Save compressed PDF
     const streamAsset = await pdfServices.getContent({
       asset: result.result.asset
     });
@@ -90,7 +90,7 @@ export const adobeCompressor = async (req, res) => {
       expiresAt: new Date(Date.now() + 15 * 60 * 1000)
     });
 
-    // 11. Cleanup original upload
+    
     await unlinkAsync(inputFilePath);
 
 

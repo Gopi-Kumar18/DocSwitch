@@ -21,15 +21,15 @@ const unlinkAsync = promisify(fs.unlink);
 export const adobeConverter = async (req, res) => {
   let outputFilePath = null;
   try {
-    // 1. Input Validation
+
     if (!req.file || !req.body.outputFormat || !req.body.conversionType) {
       return res.status(400).json({ error: "Missing required parameters" });
     }
 
-    // 2. File Validation
+
     const inputFilePath = req.file.path;
     const fileInfo = await fileTypeFromFile(inputFilePath);
-    // Accept only PDFs for Adobe conversion
+
 
     const allowedMimes = ["application/pdf"];
     if (!fileInfo || !allowedMimes.includes(fileInfo.mime)) {
@@ -37,12 +37,12 @@ export const adobeConverter = async (req, res) => {
       return res.status(400).json({ error: "Invalid file type" });
     }
 
-    // 3. Sanitize inputs
+  
     const outputFormat = req.body.outputFormat.replace(/[^a-z]/gi, "");
     const conversionType = req.body.conversionType.replace(/[^a-zA-Z0-9-_]/g, "");
     const originalName = req.file.originalname.replace(/[^a-zA-Z0-9-_.]/g, "_").substring(0, 100);
 
-      //  console.log(outputFormat);
+      
 
     let targetFormat;
 switch (outputFormat) {
@@ -63,7 +63,6 @@ switch (outputFormat) {
     return res.status(400).json({ error: "Unsupported conversion format" });
 }
 
-    // 4. Initialize Adobe PDF Services
     const credentials = new ServicePrincipalCredentials({
       clientId: process.env.PDF_SERVICES_CLIENT_ID,
       clientSecret: process.env.PDF_SERVICES_CLIENT_SECRET
@@ -75,39 +74,33 @@ switch (outputFormat) {
     
     const pdfServices = new PDFServices({ credentials });
 
-    // 5. Create an input asset by uploading the local PDF file.
+
     const inputAsset = await pdfServices.upload({
       readStream: fs.createReadStream(inputFilePath),
       mimeType: MimeType.PDF
     });
 
-    // 6. Build export parameters for PPTX conversion.
     const params = new ExportPDFParams({
       targetFormat: targetFormat
     });
 
-    // 7. Create a new job instance for exporting PDF to PPTX.
     const job = new ExportPDFJob({
       inputAsset,
       params
     });
 
-    // 8. Submit the job and get the polling URL.
     const pollingURL = await pdfServices.submit({ job });
 
-    // 9. Get the job result.
     const pdfServicesResponse = await pdfServices.getJobResult({
       pollingURL,
       resultType: ExportPDFResult
     });
 
-    // 10. creating secure storage directory.
     const downloadsDir = path.join(process.cwd(),"downloads",conversionType.slice(0, 50));
     if (!fs.existsSync(downloadsDir)) {
       fs.mkdirSync(downloadsDir, { recursive: true, mode: 0o755 });
     }
 
-    // 11. Generating a unique output file name.
     const outputFileName = `${originalName}_${crypto.randomBytes(4).toString("hex")}.${outputFormat}`;
 
     outputFilePath = path.join(downloadsDir, outputFileName);

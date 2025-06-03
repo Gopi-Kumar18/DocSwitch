@@ -1,8 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import Navbar from './Header/Navbar';
-
 import FAQs from './Pages/FAQs';
 import AboutUs from './Pages/AboutUs';
 import HomePage from './Pages/HomePage';
@@ -10,6 +9,9 @@ import ContactUs from './Pages/ContactUs.jsx';
 import DownloadPage from './Pages/DownloadPage';
 import PrivacyPolicy from './Pages/PrivacyPolicy';
 import TermsAndConditions from './Pages/TermsAndConditions';
+import Login from './Pages/Login';
+import SignUp from './Pages/SignUp';
+import Dashboard from './Pages/Dashboard';
 
 import PdfToDocx from './Components/PdfToDocx';
 import DocxToPdf from './Components/DocxToPdf';
@@ -19,86 +21,86 @@ import PdfToExcel from './Components/PdfToExcel';
 import ExcelToCSV from './Components/ExcelToCSV';
 import PdfCompress from './Components/PdfCompress';
 import CreatePdf from './Components/CreatePdf.jsx';
-import SplitPDF from './Components/SplitPDF.jsx'
+import SplitPDF from './Components/SplitPDF.jsx';
+import OcrPdfConverter from './Components/OcrPdfConverter.jsx';
 import MergeDocumentsToPdf from './Components/MergeDocsToPdf';
 
-import OtherPdfTools from './WorkingPages/OtherPdfTools'
-
+import OtherPdfTools from './WorkingPages/OtherPdfTools';
 import { ThemeProvider } from './otherComponents/ThemeContext';
-
-
-// import './otherComponents/ToolLinks.jsx';
-
-
+import { AuthProvider } from './context/AuthContext';
+import useAuth from './hooks/useAuth';
 import Footer from './Footer/Footer';
-
 import './Styles/App.css';
 
-
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  
+  if (loading) return <div>Loading...</div>;
+  return user ? children : <Navigate to="/login" replace />;
+};
 
 const App = () => {
   return (
-
-    <>
     <ThemeProvider>
-    <Router>
-      <AppContent />
-    </Router>
+      <AuthProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AuthProvider>
     </ThemeProvider>
-    </>
-    
   );
 };
 
-
 const AppContent = () => {
   const location = useLocation();
+  const { user } = useAuth();
 
   return (
-      <div className="app-container">
-        <Navbar />
-        
-        <main className="main-content">
-
-          <Routes>
-
-                 {/* Redirect from root to home page */}
-
-                 {/* <Route path="/" element={<Navigate to="/home" replace />} />
-                <Route path="/home" element={<HomePage />} /> */}
-
-                <Route path="/" element={<HomePage />} />
-                <Route path="/about-us" element={<AboutUs />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-                <Route path="/faqs" element={<FAQs />} />
-                <Route path="/download" element={<DownloadPage />} />
-                <Route path="/contact-us" element={<ContactUs />}/>
-                <Route path="/other-pdf-tools" element={<OtherPdfTools />} />
-                 
-
-                 {/*Conversion routes..*/}
-                <Route path="/pdf-to-word" element={<PdfToDocx />} />
-                <Route path="/pdf-to-presentation" element={<PdfToPptx />} />
-                <Route path="/word-to-pdf" element={<DocxToPdf />} />
-                <Route path="/presentation-to-pdf" element={<PptxToPdf />} />
-                <Route path="/pdf-to-excel" element={<PdfToExcel />}/>
-                <Route path="/excel-to-csv" element={<ExcelToCSV />}/>
-                <Route path="/compress-pdf" element={<PdfCompress />} />
-                <Route path="/create-pdf" element={<CreatePdf />} />
-                <Route path="/split-pdf" element={<SplitPDF />} />
-
-                {/*Merge route*/}
-                <Route path="/merge-docs" element={<MergeDocumentsToPdf />} />
-
-
-          </Routes>
-
-        </main>
-        {/* Show footer only on home page */}
-        {['/', '/home'].includes(location.pathname) && <Footer />}
-
-      </div>
+    <div className="app-container">
+      <Navbar user={user} />
+      
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="/faqs" element={<FAQs />} />
+          <Route path="/download" element={<DownloadPage />} />
+          <Route path="/contact-us" element={<ContactUs />}/>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          
+          {/* Protected Dashboard Route */}
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route path="/other-pdf-tools" element={<OtherPdfTools />} />
+          
+          {/* Conversion routes */}
+          <Route path="/pdf-to-word" element={<PdfToDocx />} />
+          <Route path="/pdf-to-presentation" element={<PdfToPptx />} />
+          <Route path="/word-to-pdf" element={<DocxToPdf />} />
+          <Route path="/presentation-to-pdf" element={<PptxToPdf />} />
+          <Route path="/pdf-to-excel" element={<PdfToExcel />}/>
+          <Route path="/excel-to-csv" element={<ExcelToCSV />}/>
+          <Route path="/compress-pdf" element={<PdfCompress />} />
+          <Route path="/create-pdf" element={<CreatePdf />} />
+          <Route path="/split-pdf" element={<SplitPDF />} />
+          <Route path="/ocr-pdf" element={<OcrPdfConverter />} />
+          <Route path="/merge-docs" element={<MergeDocumentsToPdf />} />
+        </Routes>
+      </main>
+      
+      {/* Show footer only on home page and tools page */}
+      {['/', '/other-pdf-tools'].includes(location.pathname) && <Footer />}
+    </div>
   );
 };
 

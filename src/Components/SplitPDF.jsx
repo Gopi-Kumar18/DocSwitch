@@ -12,7 +12,7 @@ const SplitPDF = () => {
   const [parts, setParts] = useState([]);
   const navigate = useNavigate();
 
-  const maxFileSize = 20 * 1024 * 1024; // 20MB
+  const maxFileSize = 20 * 1024 * 1024; 
   const allowedMimeTypes = ['application/pdf'];
   const allowedExtensions = ['.pdf'];
 
@@ -53,7 +53,6 @@ const SplitPDF = () => {
   };
 
   const handleDownload = (token, fileName) => {
-    // navigate to your generic download route
     navigate(`/download?token=${encodeURIComponent(token)}&fileName=${encodeURIComponent(fileName)}`);
   };
 
@@ -88,13 +87,12 @@ const SplitPDF = () => {
               />
             </div>
 
-            <div className="mt-4 text-center">
+            <div className="mt-3 text-center">
               <button
                 type="submit"
-                className="btn btn-primary w-50"
-                disabled={!file || isLoading}
-              >
-                {isLoading ? 'Splitting…' : 'Split PDF'}
+                className="btn btn-primary w-40 d-block mx-auto"
+                disabled={!file || isLoading}>
+                {isLoading ? (<span className="converting-shimmer">Splitting...</span>) : ("Split PDF")}
               </button>
             </div>
           </form>

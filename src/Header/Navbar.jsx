@@ -1,15 +1,26 @@
-import React, { useState, useEffect, useContext} from 'react';
+
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../Styles/Navbar.css';
-import {ThemeContext} from '../otherComponents/ThemeContext';
+import { ThemeContext } from '../otherComponents/ThemeContext';
+import useAuth from '../hooks/useAuth'; 
 
 const Navbar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const { darkMode, toggleTheme } = useContext(ThemeContext);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     setIsCollapsed(!isCollapsed);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/'); 
+    setIsCollapsed(true); 
   };
 
   useEffect(() => {
@@ -25,7 +36,7 @@ const Navbar = () => {
   return (
     <nav className={`custom-navbar navbar navbar-expand-lg ${darkMode ? 'dark-mode' : ''}`}>
       <div className="container">
-        <a className="navbar-brand" href="/">DocSwitch</a>
+        <Link className="navbar-brand" to="/">DocSwitch</Link>
         <button 
           className="navbar-toggler" 
           type="button" 
@@ -36,16 +47,42 @@ const Navbar = () => {
         </button>
         <div className={`collapse navbar-collapse ${isCollapsed ? '' : 'show'}`}>
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="/home">Dashboard</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Login</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Sign Up</a>
-            </li>
 
+            {user && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/dashboard" onClick={() => setIsCollapsed(true)}>
+                  Dashboard
+                </Link>
+              </li>
+            )}
+            
+            {!user && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login" onClick={() => setIsCollapsed(true)}>
+                    Login
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/signup" onClick={() => setIsCollapsed(true)}>
+                    Sign Up
+                  </Link>
+                </li>
+              </>
+            )}
+            
+            {user && (
+              <li className="nav-item">
+                <button 
+                  className="nav-link btn btn-link" 
+                  onClick={handleLogout}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                >
+                  Logout
+                </button>
+              </li>
+            )}
+            
             <li className="nav-item">
               <button 
                 className="theme-toggle-btn" 
@@ -67,5 +104,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
