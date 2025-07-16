@@ -36,7 +36,7 @@ const PdfToExcel = () => {
       formData.append('outputFormat', 'xlsx');
       formData.append('conversionType', 'pdf-to-excel');
 
-      const response = await fetch('http://localhost:3000/adobeConvert', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/adobeConvert`, {
         method: 'POST',
         body: formData,
       });

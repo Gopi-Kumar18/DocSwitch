@@ -11,7 +11,7 @@ const PdfToDocx = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const maxFileSize = 5 * 1024 * 1024; // 5MB
+  const maxFileSize = 5 * 1024 * 1024; 
 
   const allowedExtensions = ['.pdf'];
   const allowedMimeTypes = ['application/pdf'];
@@ -33,7 +33,7 @@ const PdfToDocx = () => {
       formData.append('outputFormat', 'docx');
       formData.append('conversionType', 'pdf-to-word');
 
-      const res = await fetch('http://localhost:3000/convert', {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/convert`, {
         method: 'POST',
         body: formData,
       });

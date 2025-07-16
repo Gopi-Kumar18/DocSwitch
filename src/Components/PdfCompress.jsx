@@ -9,7 +9,7 @@ const PdfCompress = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const maxFileSize = 10 * 1024 * 1024; // 10MB
+  const maxFileSize = 10 * 1024 * 1024;
 
   const allowedExtensions = ['.pdf'];
   const allowedMimeTypes = ['application/pdf'];
@@ -28,7 +28,7 @@ const PdfCompress = () => {
       const formData = new FormData();
       formData.append('file', file);
 
-      const res = await fetch('http://localhost:3000/compress', {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/compress`, {
         method: 'POST',
         body: formData,
       });

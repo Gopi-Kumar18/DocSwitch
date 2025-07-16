@@ -1,59 +1,42 @@
-import {fs, path, crypto, dotenv, fileTypeFromFile, promisify, FileToken, generateToken, CloudConvert,axios } from "../utils/coreModules.js";
+import { fileTypeFromFile, crypto, dotenv, axios, FileToken, generateToken, CloudConvert,fs, promisify, gfsProcessed, allowedMimes } from '../utils/coreModules.js';
 
 dotenv.config();
-
 const unlinkAsync = promisify(fs.unlink);
 
+const cloudConvert = new CloudConvert(process.env.CLOUDC_APIK2);
+
 export const convertFile = async (req, res) => {
-  let outputFilePath = null;   try {
-    // 1. Input Validation
+  let inputFilePath;
+  try {
+    // 1. Validate input
     if (!req.file || !req.body.outputFormat || !req.body.conversionType) {
       return res.status(400).json({ error: 'Missing required parameters' });
     }
 
-    // 2. File Validation
-    const inputFilePath = req.file.path;
-
-    // console.log('file after frontend sanitization', req.file);
+    // 2. File validation on disk
+    inputFilePath = req.file.path;                       
 
     const fileInfo = await fileTypeFromFile(inputFilePath);
 
-    const allowedMimes = [ 'application/pdf',
-      'application/msword', // .doc
-      'application/x-cfb', // Compound File Binary (some .doc files)
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-      
-      'application/vnd.ms-excel', // .xls
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
-      'application/vnd.ms-excel.sheet.macroEnabled.12', // .xlsm (this extension may cause security concerns...)
-      
-      'application/vnd.ms-powerpoint', // .ppt
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
-      
-      'image/png',
-      'image/jpeg',
-      
-      'application/zip', // .docx/.xlsx are technically ZIP archives
-      'application/octet-stream' // Generic binary fallback
-    ]; 
+    const allowed = [
+  ...allowedMimes.documents,
+  ...allowedMimes.spreadsheets,
+  ...allowedMimes.presentations,
+  ...allowedMimes.archives.filter(type => type === 'application/zip'),
+];
 
-    if (!fileInfo || !allowedMimes.includes(fileInfo.mime)) {
-      console.log('Rejected file. Detected MIME:', fileInfo?.mime);
+    if (!fileInfo || !allowed.includes(fileInfo.mime)) {
       await unlinkAsync(inputFilePath);
       return res.status(400).json({ error: 'Invalid file type' });
     }
 
-    // 3. Sanitize inputs
+    // 3. Prepare names
+    const originalName = req.file.originalname
+      .replace(/[^a-zA-Z0-9-_.]/g, '_')
+      .slice(0, 100);
     const outputFormat = req.body.outputFormat.replace(/[^a-z]/gi, '');
-    const conversionType = req.body.conversionType.replace(/[^a-zA-Z0-9-_]/g, '');
-    const originalName = req.file.originalname.replace(/[^a-zA-Z0-9-_.]/g, '_').substring(0, 100);
 
-    // console.log('File name after backend sanitization', originalName);
-
-    // 4. Initialize CloudConvert
-    const cloudConvert = new CloudConvert(process.env.CLOUDC_APIK2);
-
-    // 5. Create conversion job
+    // 4. Create CloudConvert job
     const job = await cloudConvert.jobs.create({
       tasks: {
         'import-upload': { operation: 'import/upload' },
@@ -67,86 +50,70 @@ export const convertFile = async (req, res) => {
       }
     });
 
-    // 6. File upload to CloudConvert
+    // 5. Upload to CloudConvert from disk
     const uploadTask = job.tasks.find(t => t.name === 'import-upload');
-    await cloudConvert.tasks.upload(uploadTask, fs.createReadStream(inputFilePath), originalName);
+    await cloudConvert.tasks.upload(
+      uploadTask,
+      fs.createReadStream(inputFilePath),
+      originalName
+    );
 
-    // 7. Wait for conversion
+    // 6. Wait for conversion & get download URL
     const completedJob = await cloudConvert.jobs.wait(job.id);
     const exportTask = completedJob.tasks.find(t => t.name === 'export-url');
     const downloadUrl = exportTask.result.files[0].url;
 
-    // 8. Prepare secure storage
-    const downloadsDir = path.join(process.cwd(),'downloads',conversionType.slice(0, 50));  //remind this will cause future issues..
-    
-    if (!fs.existsSync(downloadsDir)) {
-      fs.mkdirSync(downloadsDir, { recursive: true, mode: 0o755 });        //read-write-execute  by owners & read-execute by others..
-    }
-
-    // 9. Appending an hexadecimal string to the file name..
-    const outputFileName = `${originalName}_${crypto.randomBytes(4).toString('hex')}.${outputFormat}`;
-     outputFilePath = path.join(downloadsDir, outputFileName);
-    const relativeFilePath = path.join('downloads', conversionType, outputFileName);
-
-    // 10. Download converted file with timeout
-    const response = await axios.get(downloadUrl, {
+    // 7. Download converted file
+    const downloadResponse = await axios.get(downloadUrl, {
       responseType: 'stream',
-      timeout: 30000 // 30 sec...
+      timeout: 30000
     });
 
-    // 11. Secure write stream
-    const writer = fs.createWriteStream(outputFilePath, { mode: 0o600 });    //readable-writable only by owner..no permsisions to other  
-    response.data.pipe(writer);
+    // 8. Store converted file in GridFS
+    const uniqueName = `${originalName}_${crypto.randomBytes(4).toString('hex')}.${outputFormat}`;
+    const processedStream = gfsProcessed.openUploadStream(uniqueName, {
+      contentType: `application/${outputFormat}`
+    });
+    downloadResponse.data.pipe(processedStream);
 
     await new Promise((resolve, reject) => {
-      writer.on('finish',() => {
-         resolve();
+      processedStream.on('finish', resolve);
+      processedStream.on('error', reject);
     });
-    writer.on('error',(e) => {
-      console.error("Error writing file");
-     reject(e);
-  });
-});
 
-    // 12. Generating safe JWT token with IP binding
-
-    const encodedFilePath = Buffer.from(relativeFilePath).toString('base64url');
-    
-    const token = generateToken(encodedFilePath, req.ip); 
-
-
-    // 13. Store token in database
+    // 9. Generate and store access token
+    const token = generateToken(processedStream.id.toString(), req.ip);
     await FileToken.create({
       token,
-      filePath: encodedFilePath,
-      expiresAt: new Date(Date.now() + 15 * 60 * 1000)
+      fileId: processedStream.id,
+      expiresAt: new Date(Date.now() + 5 * 1000)
     });
 
-    
-    // 14. Cleanup original file
-    try {
-      await unlinkAsync(inputFilePath);
-      console.log(`[${new Date().toISOString()}] File removed from : ${inputFilePath}\n\n`);
-    } catch (err) {
-      console.error('File removal error:', err);
-    }
+    // 10. Clean up the original upload from disk
+    await unlinkAsync(inputFilePath);
 
-    // 15. sending json response..
+    // 11. Respond
     res.json({
       success: true,
       token,
-      outputFormat,
-      fileName: outputFileName
+      fileName: uniqueName,
+      outputFormat
     });
 
-  } catch (error) {
-    console.error('Conversion error:', error);
-    
-    // 16. Secure error handling
-    res.status(500).json({
-      error: 'Conversion failed',
-      details: process.env.NODE_ENV === 'development' ? error.message : null  //change -3
-    });
+  } catch (err) {
+  console.error(' Conversion error:', err);
+
+  if (inputFilePath) {
+    try {
+      await unlinkAsync(inputFilePath);
+      console.log(`[${new Date().toISOString()}] 🗑️ Temp file removed: ${inputFilePath}`);
+    } catch (deleteErr) {
+      console.warn(` !.Failed to delete temp file: ${inputFilePath}`, deleteErr.message);
+    }
+  } else {
+    console.warn(` !.inputFilePath is not defined, skipping temp file cleanup.`);
   }
-};
 
+  res.status(500).json({ error: 'Conversion failed', details: err.message });
+}
+};

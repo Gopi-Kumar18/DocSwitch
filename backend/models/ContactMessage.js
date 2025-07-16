@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { mongoose } from '../utils/coreModules';
 
 const ContactMessageSchema = new mongoose.Schema({
   enquiryType: {

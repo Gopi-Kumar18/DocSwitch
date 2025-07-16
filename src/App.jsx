@@ -24,12 +24,28 @@ import CreatePdf from './Components/CreatePdf.jsx';
 import SplitPDF from './Components/SplitPDF.jsx';
 import OcrPdfConverter from './Components/OcrPdfConverter.jsx';
 import MergeDocumentsToPdf from './Components/MergeDocsToPdf';
+import ProtectPdf from './Components/ProtectPdf.jsx';
+import UnlockPdf from './Components/UnlockPdf.jsx';
+
+import PdfToJpg from './IMGComponents/PdfToJpg';
+import WordToJpg from './IMGComponents/WordToJpg';
+import PresentationToJpg from './IMGComponents/PresentationToJpg';
+import BmpToJpg from './IMGComponents/BmpToJpg';
+import PngToJpg from './IMGComponents/PngToJpg';
+import ExcelToJpg from './IMGComponents/ExcelToJpg.jsx';
 
 import OtherPdfTools from './WorkingPages/OtherPdfTools';
+import OtherJpgTools from './WorkingPages/OtherJpgTools';
+
 import { ThemeProvider } from './otherComponents/ThemeContext';
+
 import { AuthProvider } from './context/AuthContext';
+
 import useAuth from './hooks/useAuth';
+
 import Footer from './Footer/Footer';
+
+import AIQuestionGenerator from './AI_Integration/AIQuestionGenerator';
 import './Styles/App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -82,6 +98,7 @@ const AppContent = () => {
           />
           
           <Route path="/other-pdf-tools" element={<OtherPdfTools />} />
+          <Route path="/other-jpg-tools" element={<OtherJpgTools />} />
           
           {/* Conversion routes */}
           <Route path="/pdf-to-word" element={<PdfToDocx />} />
@@ -95,6 +112,18 @@ const AppContent = () => {
           <Route path="/split-pdf" element={<SplitPDF />} />
           <Route path="/ocr-pdf" element={<OcrPdfConverter />} />
           <Route path="/merge-docs" element={<MergeDocumentsToPdf />} />
+          <Route path="/protect-pdf" element={<ProtectPdf />} />
+          <Route path="/unlock-pdf" element={<UnlockPdf />} />
+
+          {/* Image conversion routes */}
+          <Route path="/pdf-to-jpg" element={<PdfToJpg />} />
+          <Route path="/word-to-jpg" element={<WordToJpg />} />
+          <Route path="/presentation-to-jpg" element={<PresentationToJpg />} />
+          <Route path="/bmp-to-jpg" element={<BmpToJpg />} />
+          <Route path="/png-to-jpg" element={<PngToJpg />} />
+          <Route path="/excel-to-jpg" element={<ExcelToJpg />} />
+
+          <Route path="/ai-question-generator" element={<AIQuestionGenerator />} />
         </Routes>
       </main>
       

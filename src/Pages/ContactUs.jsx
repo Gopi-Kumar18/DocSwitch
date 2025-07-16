@@ -30,7 +30,7 @@ const ContactUs = () => {
         enquiryType: "grievance",
         ...formData,
       };
-      await axios.post("http://localhost:3000/contact-us", payload);
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}`, payload);
       setFeedbackMsg("Your grievance has been submitted successfully!");
       setFormData({
         fullName: "",
@@ -119,7 +119,6 @@ const ContactUs = () => {
                     <option value="+91">IN +91</option>
                     <option value="+1">US +1</option>
                     <option value="+44">UK +44</option>
-                    {/* Add more codes if needed */}
                   </select>
                 </span>
               </label>

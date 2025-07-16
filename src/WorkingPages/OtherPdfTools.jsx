@@ -18,6 +18,14 @@ const OtherPdfTools = () => {
           <CardItem key={index} {...card} />
         ))}
       </div>
+
+      <h3 style={{textAlign : "center"}}>Secure Pdf's</h3>
+
+      <div className="row justify-content-center">
+         {CardData.slice(11,13).map((card, index) => (
+          <CardItem key={index} {...card} />
+        ))}
+      </div>
     </div>
     </>
 

@@ -23,15 +23,15 @@ const Navbar = () => {
     setIsCollapsed(true); 
   };
 
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add('dark-theme');
-      document.body.classList.remove('light-theme');
-    } else {
-      document.body.classList.add('light-theme');
-      document.body.classList.remove('dark-theme');
-    }
-  }, [darkMode]);
+  // useEffect(() => {
+  //   if (darkMode) {
+  //     document.body.classList.add('dark-theme');
+  //     document.body.classList.remove('light-theme');
+  //   } else {
+  //     document.body.classList.add('light-theme');
+  //     document.body.classList.remove('dark-theme');
+  //   }
+  // }, [darkMode]);
 
   return (
     <nav className={`custom-navbar navbar navbar-expand-lg ${darkMode ? 'dark-mode' : ''}`}>
@@ -84,7 +84,7 @@ const Navbar = () => {
             )}
             
             <li className="nav-item">
-              <button 
+              {/* <button 
                 className="theme-toggle-btn" 
                 onClick={toggleTheme}
                 aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -94,7 +94,11 @@ const Navbar = () => {
                 ) : (
                   <i className="fas fa-moon"></i> // Moon icon for dark mode
                 )}
-              </button>
+              </button> */}
+              <button className="theme-toggle-btn" onClick={toggleTheme}>
+  {darkMode ? <i className="fas fa-sun"></i> : <i className="fas fa-moon"></i>}
+</button>
+
             </li>
           </ul>
         </div>

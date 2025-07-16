@@ -10,10 +10,8 @@ const CreatePdf = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  // 5 MB limit
   const maxFileSize = 5 * 1024 * 1024;
 
-  // Supported formats for Create PDF
   const allowedExtensions = [
     '.doc', '.docx',
     '.ppt', '.pptx',
@@ -55,7 +53,7 @@ const CreatePdf = () => {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('http://localhost:3000/adobeCreatePDF', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/adobeCreatePDF`, {
         method: 'POST',
         body: formData
       });

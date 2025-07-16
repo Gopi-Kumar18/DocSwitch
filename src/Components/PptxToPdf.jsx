@@ -11,13 +11,13 @@ const PptxToPdf = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const maxFileSize = 5 * 1024 * 1024; // 5MB
+  const maxFileSize = 5 * 1024 * 1024;
 
   const allowedExtensions = ['.pptx', '.ppt']; 
   const allowedMimeTypes = [
-    'application/vnd.ms-powerpoint', // .ppt 
-    'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx 
-    'application/zip' // Fallback for some Office files
+    'application/vnd.ms-powerpoint', 
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    'application/zip'
   ];
   
   const sanitizeFilename = (filename) => {
@@ -37,7 +37,7 @@ const PptxToPdf = () => {
       formData.append('outputFormat', 'pdf');
       formData.append('conversionType', 'presentation-to-pdf');
 
-      const res = await fetch('http://localhost:3000/convert', {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/convert`, {
         method: 'POST',
         body: formData,
       });

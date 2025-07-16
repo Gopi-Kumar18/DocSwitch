@@ -1,4 +1,8 @@
-import { fs, path, crypto, dotenv, fileTypeFromFile, promisify, FileToken, generateToken } from "../utils/coreModules.js";
+import {
+  
+  fs,crypto,dotenv,fileTypeFromFile,promisify,FileToken,generateToken,path,gfsProcessed
+
+} from '../utils/coreModules.js';
 
 import {
   ServicePrincipalCredentials,
@@ -9,100 +13,90 @@ import {
   SDKError,
   ServiceUsageError,
   ServiceApiError,
-   ClientConfig
-} from "@adobe/pdfservices-node-sdk";
+  ClientConfig
+} from '@adobe/pdfservices-node-sdk';
 
 dotenv.config();
+
 const unlinkAsync = promisify(fs.unlink);
 
 export const ocr_pdf = async (req, res) => {
-  let outputFilePath = null;
+  let inputFilePath;
+
   try {
     if (!req.file || !req.body.conversionType) {
-      return res.status(400).json({ error: "Missing required parameters" });
+      return res.status(400).json({ error: 'Missing required parameters' });
     }
 
-    const inputFilePath = req.file.path;
+    inputFilePath = req.file.path;
     const fileInfo = await fileTypeFromFile(inputFilePath);
-
-    if (!fileInfo || fileInfo.mime !== "application/pdf") {
+    if (!fileInfo || fileInfo.mime !== MimeType.PDF) {
       await unlinkAsync(inputFilePath);
-      return res.status(400).json({ error: "Invalid file type. Only PDFs are supported." });
+      return res.status(400).json({ error: 'Only PDF is supported for OCR' });
     }
 
-    const conversionType = req.body.conversionType.replace(/[^a-zA-Z0-9-_]/g, "");
-    const originalName = req.file.originalname.replace(/[^a-zA-Z0-9-_.]/g, "_").substring(0, 100);
+    const conversionType = req.body.conversionType.replace(/[^a-z0-9_-]/gi, '');
+    const originalName   = req.file.originalname.replace(/[^a-zA-Z0-9-_.]/g, '_').slice(0, 100);
+    const baseName       = path.parse(originalName).name;
 
-    const credentials = new ServicePrincipalCredentials({
-      clientId: process.env.PDF_SERVICES_CLIENT_ID,
+    const credentials  = new ServicePrincipalCredentials({
+      clientId:     process.env.PDF_SERVICES_CLIENT_ID,
       clientSecret: process.env.PDF_SERVICES_CLIENT_SECRET
     });
-
     const clientConfig = new ClientConfig({ timeout: 60000 });
-
-    const pdfServices = new PDFServices({ credentials, clientConfig });
+    const pdfServices  = new PDFServices({ credentials, clientConfig });
 
     const inputAsset = await pdfServices.upload({
       readStream: fs.createReadStream(inputFilePath),
-      mimeType: MimeType.PDF
+      mimeType:   MimeType.PDF
     });
-
-    const job = new OCRJob({ inputAsset });
-
+    const job       = new OCRJob({ inputAsset });
     const pollingURL = await pdfServices.submit({ job });
-
-    const pdfServicesResponse = await pdfServices.getJobResult({
+    const result     = await pdfServices.getJobResult({
       pollingURL,
       resultType: OCRResult
     });
 
-    const downloadsDir = path.join(process.cwd(), "downloads", conversionType.slice(0, 50));
-    if (!fs.existsSync(downloadsDir)) {
-      fs.mkdirSync(downloadsDir, { recursive: true, mode: 0o755 });
-    }
+    const { asset } = result.result;
+    const streamRes = await pdfServices.getContent({ asset });
 
-    const outputFileName = `${originalName}_ocr_${crypto.randomBytes(4).toString("hex")}.pdf`;
-    outputFilePath = path.join(downloadsDir, outputFileName);
-    const relativeFilePath = path.join("downloads", conversionType, outputFileName);
-
-    const streamAsset = await pdfServices.getContent({
-      asset: pdfServicesResponse.result.asset
+    const uniqueName   = `${baseName}_${crypto.randomBytes(4).toString('hex')}.pdf`;
+    const uploadStream = gfsProcessed.openUploadStream(uniqueName, {
+      contentType: MimeType.PDF
     });
-
-    const writer = fs.createWriteStream(outputFilePath, { mode: 0o600 });
-    streamAsset.readStream.pipe(writer);
+    streamRes.readStream.pipe(uploadStream);
     await new Promise((resolve, reject) => {
-      writer.on("finish", resolve);
-      writer.on("error", reject);
+      uploadStream.on('finish', resolve);
+      uploadStream.on('error', reject);
     });
 
-    const encodedFilePath = Buffer.from(relativeFilePath).toString("base64url");
-    const token = generateToken(encodedFilePath, req.ip);
-
+    const token = generateToken(uploadStream.id.toString(), req.ip);
     await FileToken.create({
       token,
-      filePath: encodedFilePath,
-      expiresAt: new Date(Date.now() + 15 * 60 * 1000)
+      fileId:    uploadStream.id,
+      expiresAt: new Date(Date.now() + 5 * 1000)
     });
 
     await unlinkAsync(inputFilePath);
 
     res.json({
-      success: true,
+      success:      true,
       token,
-      outputFormat: "pdf",
-      fileName: outputFileName
+      fileName:     uniqueName,
+      outputFormat: 'pdf'
     });
-  } catch (err) {
-    if (err instanceof SDKError || err instanceof ServiceUsageError || err instanceof ServiceApiError) {
-      console.error("Adobe SDK Error:", err);
-    } else {
-      console.error("General Error:", err);
-    }
 
+  } catch (err) {
+    console.error('OCR error:', err);
+    if (req.file?.path) await unlinkAsync(req.file.path).catch(() => {});
+    const msg =
+      err instanceof ServiceApiError   ? 'Adobe API error' :
+      err instanceof ServiceUsageError ? 'Adobe usage error' :
+      err instanceof SDKError          ? 'Adobe SDK error' :
+      'Internal error';
     res.status(500).json({
-      error: "OCR Conversion failed",
-      details: process.env.NODE_ENV === "development" ? err.message : null
+      error:   msg,
+      details: process.env.NODE_ENV === 'development' ? err.message : undefined
     });
   }
 };

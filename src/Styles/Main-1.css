@@ -6,7 +6,16 @@
 .pdf-to-pptx,
 .pptx-to-pdf,
 .pdf-compress,
-.split-pdf
+.split-pdf,
+.create-pdf,
+.ocr-to-pdf,
+.protect-pdf,
+.unlock-pdf,
+
+.pdf-to-jpg,
+.word-to-jpg,
+.presentation-to-jpg,
+.bmp-to-jpg
 
 
 .card {

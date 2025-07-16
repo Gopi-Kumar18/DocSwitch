@@ -28,7 +28,7 @@ const SplitPDF = () => {
       formData.append('file', file);
       formData.append('pageCount', pageCount);
 
-      const res = await fetch('http://localhost:3000/split-pdf', {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/split-pdf`, {
         method: 'POST',
         body: formData,
       });

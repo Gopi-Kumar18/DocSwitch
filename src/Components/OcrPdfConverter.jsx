@@ -9,7 +9,7 @@ const OcrPdfConverter = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const maxFileSize = 10 * 1024 * 1024; // 10 MB for scanned PDFs
+  const maxFileSize = 10 * 1024 * 1024; 
   const allowedExtensions = ['.pdf'];
   const allowedMimeTypes = ['application/pdf'];
 
@@ -30,7 +30,7 @@ const OcrPdfConverter = () => {
       formData.append('outputFormat', 'pdf');
       formData.append('conversionType', 'ocr-pdf');
 
-      const res = await fetch('http://localhost:3000/ocr-convert', {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/ocr-convert`, {
         method: 'POST',
         body: formData,
       });
@@ -95,7 +95,7 @@ const OcrPdfConverter = () => {
         </div>
       </div>
 
-      {/* Instructions */}
+      {/* Q&A */}
       <div className="container mt-5 mb-5 text-center">
         <h4 className="mb-4">
           How to convert scanned PDFs using DocSwitch OCR tool

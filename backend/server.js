@@ -1,11 +1,10 @@
-
-import express from 'express';
-import dotenv from 'dotenv';
-
+import { express } from '../utils/coreModules';
+import { dotenv } from '../utils/coreModules';
+import { connectDB } from './config/db.js';
 import { applyMiddlewares } from './middlewares/middlewares.js';
+
 import convertRoutes from './routes/convertRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
-import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 
@@ -15,7 +14,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-connectDB();
+await connectDB();
 
 applyMiddlewares(app);
 
@@ -27,46 +26,8 @@ app.use('/api/user', userRoutes);
 
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}\n`);
+  console.log(`🚀 Backend server running on http://localhost:${PORT}\n`);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

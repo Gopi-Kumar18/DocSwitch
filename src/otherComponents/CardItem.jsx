@@ -1,4 +1,3 @@
-// src/components/CardItem.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -6,7 +5,7 @@ const CardItem = ({ path, img, title, text, subtext, footerNote }) => {
   return (
     <div className="col-md-6 col-lg-4 mb-4">
       <Link to={path} className="text-decoration-none text-dark">
-        <div className="card h-100 shadow-sm">
+        <div className="card h-80 shadow-sm">
           <div className="card-body">
             <div className="mb-3">
               <img src={img} alt={`${title} Logo`} className="img-fluid" style={{ maxHeight: '40px' }} />

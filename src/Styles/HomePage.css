@@ -94,6 +94,25 @@
 }
 
 
+.arrow-inline {
+  font-size: 2rem;
+  color: #007bff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  transition: color 0.2s ease;
+}
+
+.arrow-inline:hover {
+  color: #0056b3;
+  cursor: pointer;
+}
+
+
+
+
+
 /* body.dark-theme {
   background: #121212;
   color: #ffffff;

@@ -10,13 +10,13 @@ const ExcelToCSV = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const maxFileSize = 5 * 1024 * 1024; // 5MB
+  const maxFileSize = 5 * 1024 * 1024; 
   
   const allowedExtensions = ['.xls', '.xlsx', '.xlsm'];
   const allowedMimeTypes = [
-    'application/vnd.ms-excel', // .xls
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
-    'application/vnd.ms-excel.sheet.macroEnabled.12' // .xlsm
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-excel.sheet.macroEnabled.12' 
   ];
 
   const sanitizeFilename = (filename) => {
@@ -36,7 +36,7 @@ const ExcelToCSV = () => {
       formData.append('outputFormat', 'csv');
       formData.append('conversionType', 'excel-to-csv');
 
-      const res = await fetch('http://localhost:3000/convert', {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/convert`, {
         method: 'POST',
         body: formData,
       });

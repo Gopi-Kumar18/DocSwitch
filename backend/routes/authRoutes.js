@@ -1,7 +1,11 @@
-import express from 'express';
+import { express } from '../utils/coreModules';
 import User from '../models/User.js';
 
+const app = express();
+
 const router = express.Router();
+
+app.use(express.json());
 
 router.post('/signup', async (req, res) => {
   try {
@@ -41,7 +45,7 @@ router.post('/login', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-   console.log('Session after login:', req.session);
+  //  console.log('Session after login:', req.session);
 });
 
 

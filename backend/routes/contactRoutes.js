@@ -1,9 +1,7 @@
-// backend/routes/contactRoutes.js
-import express from "express";
-import nodemailer from "nodemailer";
+import { express } from '../utils/coreModules';
+import { nodemailer } from '../utils/coreModules';
 
 import ContactMessage from "../models/ContactMessage.js";
-
 
 const router = express.Router();
 
@@ -25,7 +23,6 @@ if (
   });
 }
 
-// POST /api/contact-us
 router.post("/", async (req, res) => {
   const { enquiryType, fullName, email, countryCode, phone, message } = req.body;
 

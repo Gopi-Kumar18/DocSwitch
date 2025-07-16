@@ -12,13 +12,13 @@ const DocxToPdf = () => {
   const navigate = useNavigate();
 
  
-  const maxFileSize = 5 * 1024 * 1024; // 5MB      
+  const maxFileSize = 5 * 1024 * 1024;       
   
   const allowedExtensions = ['.docx', '.doc'];
   const allowedMimeTypes = [
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
-    'application/msword', // .doc
-    'application/zip' // .zip
+    'application/msword', 
+    'application/zip'
   ];
 
 
@@ -41,7 +41,7 @@ const DocxToPdf = () => {
       formData.append('outputFormat', 'pdf');
       formData.append('conversionType', 'word-to-pdf');
 
-      const res = await fetch('http://localhost:3000/convert', {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/convert`, {
         method: 'POST',
         body: formData,
       });

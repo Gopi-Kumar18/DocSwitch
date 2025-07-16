@@ -1,9 +1,9 @@
-import express from 'express';
+import { express } from '../utils/coreModules';
 const router = express.Router();
 
 
 router.get('/me', (req, res) => {
-     console.log('Session in /me:', req.session);
+    //  console.log('Session in /me:', req.session);
   if (!req.session.user) {
     return res.status(401).json({ error: 'Unauthorized' });
   }

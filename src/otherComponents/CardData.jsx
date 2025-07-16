@@ -1,5 +1,4 @@
 import React from "react";
-
 import PdfToWordlogo from '../assets/Pdf-Word.png';
 import PdfToPresentationlogo from '../assets/Pdf-Pres.png';
 import PdfToExcellogo from '../assets/Pdf-Excel.png';
@@ -98,6 +97,79 @@ const CardData = [
     text: "Transform your PDF to Word format",
     subtext: "Edit text and reuse content in Word easily.",
     footerNote: "Click to convert"
+  },
+  {
+    path: "/protect-pdf",
+    img: CompressPdflogo,
+    title: "Protect PDF",
+    text: "Protect your PDF files with a password ",
+    subtext: "Secure your documents with encryption.",
+    footerNote: "Click to convert"
+  },
+  {
+    path: "/unlock-pdf",
+    img: CompressPdflogo,
+    title: "Unlock Your PDF",
+    text: "Unlock your PDF files ",
+    subtext: "Remove password protection from your PDFs.",
+    footerNote: "Click to convert"
+  },
+  {
+    path: "/ai-question-generator",
+    img: CompressPdflogo,
+    title: "AI Question Generator",
+    text: "Generate Questions with AI",
+    subtext: "Generate questions from pdf using AI.",
+    footerNote: "Click to Generate"
+  },
+  
+   {
+    path: "/pdf-to-jpg",
+    img: CompressPdflogo,
+    title: "Convert PDF to JPG",
+    text: "Generate Questions with AI",
+    subtext: "Generate questions from pdf using AI.",
+    footerNote: "Click to Generate"
+  },
+   {
+    path: "/word-to-jpg",
+    img: CompressPdflogo,
+    title: "Convert Word to JPG",
+    text: "Generate Questions with AI",
+    subtext: "Generate questions from pdf using AI.",
+    footerNote: "Click to Generate"
+  },
+   {
+    path: "/presentation-to-jpg",
+    img: CompressPdflogo,
+    title: "Convert PPT to JPG",
+    text: "Generate Questions with AI",
+    subtext: "Generate questions from pdf using AI.",
+    footerNote: "Click to Generate"
+  },
+  {
+    path: "/bmp-to-jpg",
+    img: CompressPdflogo,
+    title: "Convert BMP to JPG",
+    text: "Generate Questions with AI",
+    subtext: "Generate questions from pdf using AI.",
+    footerNote: "Click to Generate"
+  },
+  {
+    path: "/excel-to-jpg",
+    img: CompressPdflogo,
+    title: "Convert Excel Sheets to JPG",
+    text: "Generate Questions with AI",
+    subtext: "Generate questions from pdf using AI.",
+    footerNote: "Click to Generate"
+  },
+  {
+    path: "/png-to-jpg",
+    img: CompressPdflogo,
+    title: "Convert an PNG to JPG",
+    text: "Generate Questions with AI",
+    subtext: "Generate questions from pdf using AI.",
+    footerNote: "Click to Generate"
   }
 ];
 

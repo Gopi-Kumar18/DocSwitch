@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "@adobe/pdfservices-node-sdk": "^4.1.0",
+    "@ilovepdf/ilovepdf-nodejs": "^0.3.1",
     "axios": "^1.9.0",
     "bcryptjs": "^3.0.2",
     "cloudconvert": "^2.3.7",
@@ -26,7 +27,8 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.0",
-    "multer": "^1.4.5-lts.2",
+    "multer": "^1.4.4",
+    "multer-gridfs-storage": "^5.0.2",
     "nodemailer": "^7.0.3",
     "nodemon": "^3.1.10",
     "passport": "^0.7.0",

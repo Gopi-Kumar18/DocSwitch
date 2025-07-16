@@ -12,7 +12,7 @@ const MergeDocumentsToPdf = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
-  // Allowed file formats
+
   const allowedTypes = [
     'application/pdf',
     'application/msword',
@@ -23,7 +23,7 @@ const MergeDocumentsToPdf = () => {
     'image/jpeg'
   ];
 
-  const maxFileSize = 5 * 1024 * 1024; // 5MB
+  const maxFileSize = 5 * 1024 * 1024; 
 
   
   const sanitizeFilename = (filename) => {
@@ -53,14 +53,12 @@ const MergeDocumentsToPdf = () => {
       return;
     }
 
-    // Check total file count
     const totalFiles = files.length + sanitizedFiles.length;
     if (totalFiles > 10) {
       setError('Maximum 10 files allowed.');
       return;
     }
 
-    // Append new files to existing ones
     setFiles(prevFiles => [...prevFiles, ...sanitizedFiles]);
     setError('');
   };
@@ -91,11 +89,7 @@ const MergeDocumentsToPdf = () => {
         formData.append('files', file);
       });
 
-      const res = await axios.post('http://localhost:3000/merge', formData, {
-        // headers: {
-        //   'Content-Type': 'multipart/form-data'
-        // }
-      });
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/merge`, formData);
 
       if (res.data.success) {
         const encodedToken = encodeURIComponent(res.data.token);

@@ -1,11 +1,4 @@
-
-import cors from 'cors';
-import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
-import express from 'express';
-import session from 'express-session';
-import MongoStore from 'connect-mongo'; 
-import dotenv from 'dotenv';
+import { cors,helmet,rateLimit,express,session,MongoStore,dotenv } from '../utils/coreModules'
 
 dotenv.config();
 
@@ -17,6 +10,7 @@ export const applyMiddlewares = (app) => {
     origin: process.env.CLIENT_ORIGIN,
     credentials: true,
   }));
+
     
   app.use(express.json());
 
@@ -32,12 +26,13 @@ export const applyMiddlewares = (app) => {
   secret: process.env.SESSION_SECRET, 
   resave: false,
   saveUninitialized: false,
+  rolling: true,
   store: MongoStore.create({
     mongoUrl: process.env.MONGODB_URI,
     collectionName: 'sessions'
   }),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24, 
+    maxAge: 1000 * 60 * 10, 
     httpOnly: true,
     sameSite: 'lax',
     secure: false 
