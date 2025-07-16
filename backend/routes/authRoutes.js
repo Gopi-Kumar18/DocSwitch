@@ -1,4 +1,4 @@
-import { express } from '../utils/coreModules';
+import { express } from '../utils/coreModules.js';
 import User from '../models/User.js';
 
 const app = express();

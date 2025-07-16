@@ -1,7 +1,7 @@
-import { dotenv } from '../utils/coreModules';
+import { dotenv } from '../utils/coreModules.js';
 dotenv.config();
 
-import { mongoose } from '../utils/coreModules';
+import { mongoose } from '../utils/coreModules.js';
 
 const connectAndClean = async () => {
   try {

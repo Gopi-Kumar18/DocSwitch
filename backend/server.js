@@ -1,5 +1,5 @@
-import { express } from '../utils/coreModules';
-import { dotenv } from '../utils/coreModules';
+import { express } from './utils/coreModules.js';
+import { dotenv } from './utils/coreModules.js';
 import { connectDB } from './config/db.js';
 import { applyMiddlewares } from './middlewares/middlewares.js';
 

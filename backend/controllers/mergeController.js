@@ -1,148 +1,123 @@
+import {
+  
+  fs,path,crypto,dotenv,fileTypeFromFile,promisify,FileToken,generateToken,CloudConvert,gfsProcessed,allowedMimes
 
-import {fs, path, crypto, dotenv, fileTypeFromFile, promisify, FileToken, generateToken, axios, CloudConvert } from "../utils/coreModules.js";
+} from '../utils/coreModules.js';
 
 dotenv.config();
 
 const unlinkAsync = promisify(fs.unlink);
 
 export const mergePdfs = async (req, res) => {
+  let cloudConvert;
   try {
-    
     const files = req.files;
     if (!files || files.length === 0) {
       return res.status(400).json({ error: 'No files provided for merge' });
     }
-    
-    const outputFormat = 'pdf';
-    const conversionType = 'merged-docs';
 
-      const allowedMimes = [
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-powerpoint',
-      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-      'image/png',
-      'image/jpeg'
+    const allowed = [
+       ...allowedMimes.documents,
+        ...allowedMimes.spreadsheets,
+        ...allowedMimes.presentations,
+        ...allowedMimes.archives.filter(type => type === 'application/zip'),
+        ...allowedMimes.images.filter(type => type === 'image/png' || type === 'image/jpeg' || type === 'image/bmp' || type === 'image/gif' || type === 'image/tiff' || type === 'image/webp'),
     ];
-    
     for (const file of files) {
-      const fileInfo = await fileTypeFromFile(file.path);
-      console.log('Detected MIME type for', file.originalname, ':', fileInfo?.mime); 
-      if (!fileInfo || !allowedMimes.includes(fileInfo.mime)) {
-        await unlinkAsync(file.path);
+      const info = await fileTypeFromFile(file.path);
+      if (!info || !allowed.includes(info.mime)) {
+        await unlinkAsync(file.path).catch(() => {});
         return res.status(400).json({ error: `Invalid file type: ${file.originalname}` });
       }
     }
 
-    const cloudConvert = new CloudConvert(process.env.CLOUDC_APIK2);
-
+    cloudConvert = new CloudConvert(process.env.CLOUDC_APIK);
     const importTasks = {};
     const convertTasks = {};
-    
-    files.forEach((file, index) => {
-      const sanitizedOriginalName = file.originalname.replace(/[^a-zA-Z0-9-_.]/g, '_').substring(0, 100);
-      
-      importTasks[`import-upload-${index}`] = {
-        operation: 'import/upload'
-      };
 
-      convertTasks[`convert-to-pdf-${index}`] = {
-        operation: 'convert',
-        input: [`import-upload-${index}`],
+    files.forEach((file, idx) => {
+      const safeName = file.originalname
+        .replace(/[^a-zA-Z0-9-_.]/g, '_')
+        .slice(0, 100);
+
+      importTasks[`import-${idx}`] = { operation: 'import/upload' };
+      convertTasks[`convert-${idx}`] = {
+        operation:     'convert',
+        input:         [`import-${idx}`],
         output_format: 'pdf'
       };
 
-      file.sanitizedOriginalName = sanitizedOriginalName;
+      file.safeName = safeName;
     });
 
     const job = await cloudConvert.jobs.create({
       tasks: {
         ...importTasks,
         ...convertTasks,
-        'merge-pdfs': {
-          operation: 'merge',
-          input: Object.keys(convertTasks), 
-          output_format: outputFormat,
+        'merge': {
+          operation:     'merge',
+          input:         Object.keys(convertTasks),
+          output_format: 'pdf'
         },
-        'export-url': {
+        'export': {
           operation: 'export/url',
-          input: ['merge-pdfs']
+          input:     ['merge']
         }
       }
     });
 
-    
-    await Promise.all(files.map(async (file, index) => {
-      const uploadTask = job.tasks.find(t => t.name === `import-upload-${index}`);
-      await cloudConvert.tasks.upload(
-        uploadTask,
-        fs.createReadStream(file.path),
-        file.sanitizedOriginalName
-      );
+    await Promise.all(files.map(async (file, idx) => {
+      const task = job.tasks.find(t => t.name === `import-${idx}`);
+      await cloudConvert.tasks.upload(task, fs.createReadStream(file.path), file.safeName);
     }));
 
-    
-    const completedJob = await cloudConvert.jobs.wait(job.id);
-    const exportTask = completedJob.tasks.find(t => t.name === 'export-url');
+    const completed = await cloudConvert.jobs.wait(job.id);
+    const exportTask = completed.tasks.find(t => t.name === 'export');
     const downloadUrl = exportTask.result.files[0].url;
 
-    const downloadsDir = path.join(process.cwd(), 'downloads', conversionType.slice(0,50)); //conversionTypes.slice(0,50)
-    if (!fs.existsSync(downloadsDir)) {
-      fs.mkdirSync(downloadsDir, { recursive: true, mode: 0o755 }); 
-    }
+    const baseName = path.parse(files[0].originalname).name.replace(/[^a-zA-Z0-9-_]/g, "_").slice(0, 50);
 
-    const outputFileName = `${sanitizedOriginalName}_${crypto.randomBytes(4).toString('hex')}.pdf`;
-    const outputFilePath = path.join(downloadsDir, outputFileName);
-    const relativeFilePath = path.join('downloads', conversionType, outputFileName);
-
-    const response = await axios.get(downloadUrl, {
+    const mergedName = `${baseName}_${crypto.randomBytes(4).toString('hex')}.pdf`;
+    const downloadRes = await (await import('axios')).default.get(downloadUrl, {
       responseType: 'stream',
-      timeout: 30000 
+      timeout: 30000
     });
-    const writer = fs.createWriteStream(outputFilePath, { mode: 0o600 }); 
-    response.data.pipe(writer);
+    const uploadStream = gfsProcessed.openUploadStream(mergedName, {
+      contentType: 'application/pdf'
+    });
+    downloadRes.data.pipe(uploadStream);
     await new Promise((resolve, reject) => {
-      writer.on('finish', resolve);
-      writer.on('error', reject);
+      uploadStream.on('finish', resolve);
+      uploadStream.on('error', reject);
     });
 
-    const encodedFilePath = Buffer.from(relativeFilePath).toString('base64url');
-    
-    const token = generateToken(encodedFilePath, req.ip);
-
+    const token = generateToken(uploadStream.id.toString(), req.ip);
     await FileToken.create({
       token,
-      filePath: encodedFilePath,
-      expiresAt: new Date(Date.now() + 15 * 60 * 1000)
+      fileId:    uploadStream.id,
+      expiresAt: new Date(Date.now() + 5 * 1000)
     });
 
-    await Promise.all(files.map(async (file) => {
-      try {
-        await unlinkAsync(file.path);
-        console.log(`[${new Date().toISOString()}] File removed: ${file.path}`);
-      } catch (err) {
-        console.error(`Error removing file ${file.path}:`, err);
-      }
-    }));
+    await Promise.all(files.map(f => unlinkAsync(f.path).catch(() => {})));
 
     res.json({
-      success: true,
+      success:      true,
       token,
-      outputFormat,
-      fileName: outputFileName
+      fileName:     mergedName,
+      outputFormat: 'pdf'
     });
 
-  } catch (error) {
-    console.error('Merge error:', error);
-    res.status(500).json({
-      error: 'Document merge failed',
-      details: process.env.NODE_ENV === 'development' ? error.message : null
+  } catch (err) {
+    console.error('Merge error:', err);
+    if (req.files) {
+      await Promise.all(req.files.map(f => unlinkAsync(f.path).catch(() => {})));
+    }
+    return res.status(500).json({
+      error:   'Document merge failed',
+      details: process.env.NODE_ENV === 'development' ? err.message : undefined
     });
   }
 };
-
-
 
 
 

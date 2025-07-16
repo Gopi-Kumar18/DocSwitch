@@ -1,4 +1,4 @@
-import { cors,helmet,rateLimit,express,session,MongoStore,dotenv } from '../utils/coreModules'
+import { cors,helmet,rateLimit,express,session,MongoStore,dotenv } from '../utils/coreModules.js'
 
 dotenv.config();
 

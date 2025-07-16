@@ -1,4 +1,4 @@
-import { mongoose } from '../utils/coreModules';
+import { mongoose } from '../utils/coreModules.js';
 
 const FileTokenSchema = new mongoose.Schema({
   token: { type: String, required: true, unique: true },

@@ -1,6 +1,6 @@
 
-import { jwt } from '../utils/coreModules';
-import { dotenv } from '../utils/coreModules';
+import { jwt } from '../utils/coreModules.js';
+import dotenv from 'dotenv';
 
 dotenv.config();
 

@@ -1,4 +1,4 @@
-import { express } from '../utils/coreModules';
+import { express } from '../utils/coreModules.js';
 const router = express.Router();
 
 

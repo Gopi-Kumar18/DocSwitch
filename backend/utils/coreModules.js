@@ -58,6 +58,6 @@ export {
   session,
   MongoStore,
   bcrypt,
-  bcrypt
+  nodemailer
   
 };

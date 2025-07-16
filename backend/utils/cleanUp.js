@@ -1,5 +1,5 @@
 
-import { fs } from '../utils/coreModules';
+import { fs } from '../utils/coreModules.js';
 
 export const deleteLocalFile = async (filePath) => {
   try {

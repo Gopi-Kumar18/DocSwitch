@@ -1,5 +1,5 @@
-import { mongoose } from '../utils/coreModules';
-import { bcrypt } from '../utils/coreModules';
+import { mongoose } from '../utils/coreModules.js';
+import { bcrypt } from '../utils/coreModules.js';
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },

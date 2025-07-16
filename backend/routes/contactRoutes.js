@@ -1,5 +1,5 @@
-import { express } from '../utils/coreModules';
-import { nodemailer } from '../utils/coreModules';
+import { express } from '../utils/coreModules.js';
+import { nodemailer } from '../utils/coreModules.js';
 
 import ContactMessage from "../models/ContactMessage.js";
 
