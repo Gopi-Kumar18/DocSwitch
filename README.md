@@ -7,7 +7,8 @@ DocSwitch is a powerful, web-based file conversion platform built using the MERN
 
 Universal File Conversion: Convert between common document and image formats:
 
-(Document Conversion's)
+**(Document Conversion's)**
+
 PDF ↔ Word 
 
 Word → PDF
@@ -35,7 +36,8 @@ Secure PDF
 Unlock PDF
 
 
-(Image Conversions)
+**(Image Conversions)**
+
 PDF ↔ Image (JPG, PNG)
 
 Word (DOC/DOCX) → Image
@@ -49,7 +51,8 @@ BMP ↔ JPG/PNG
 PNG ↔ JPG
 
 
-(Unique Feature)
+**(Unique Feature)**
+
 AI-Question Generator(using Gemini API)
 
 Multi-Page Support: Automatically ZIP multiple page outputs into a single archive.
@@ -126,7 +129,7 @@ Select the desired output format (JPG or PNG).
 Click Convert and download your converted file. If multiple pages, download the ZIP or Share the download link.
 
 
-Live Project Demo Images: 
+**Live Project Demo Images:** 
 
 1.) SignUp Page:
 
