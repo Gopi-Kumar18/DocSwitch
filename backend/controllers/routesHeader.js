@@ -8,4 +8,6 @@ export { splitPdf } from './SplitPdfCon.js';
 export { ocr_pdf } from './OCR_PDF.js';
 export { protectPdf } from './securePdf.js';
 export { removePass } from './unlockPdf.js';
-export { convertImg } from './ccImgController.js';
+export { convertToJpg } from './ccImgController.js';
+export { convertToPng } from './ccImgController.js';
+

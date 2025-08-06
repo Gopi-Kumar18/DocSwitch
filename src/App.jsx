@@ -10,8 +10,10 @@ import DownloadPage from './Pages/DownloadPage';
 import PrivacyPolicy from './Pages/PrivacyPolicy';
 import TermsAndConditions from './Pages/TermsAndConditions';
 import Login from './Pages/Login';
-import SignUp from './Pages/SignUp';
+import SignUp from './Pages/Signup';
 import Dashboard from './Pages/Dashboard';
+import ForgetPass from './Pages/ForgetPass';
+import ResetPass from './Pages/ResetPass';
 
 import PdfToDocx from './Components/PdfToDocx';
 import DocxToPdf from './Components/DocxToPdf';
@@ -27,25 +29,20 @@ import MergeDocumentsToPdf from './Components/MergeDocsToPdf';
 import ProtectPdf from './Components/ProtectPdf.jsx';
 import UnlockPdf from './Components/UnlockPdf.jsx';
 
-import PdfToJpg from './IMGComponents/PdfToJpg';
-import WordToJpg from './IMGComponents/WordToJpg';
-import PresentationToJpg from './IMGComponents/PresentationToJpg';
-import BmpToJpg from './IMGComponents/BmpToJpg';
-import PngToJpg from './IMGComponents/PngToJpg';
-import ExcelToJpg from './IMGComponents/ExcelToJpg.jsx';
+import { PDFToImage, WordToImage, ExcelToImage, PowerpointToImage, BMPToImage, PNGToJPG, JPGToPNG } from './IMGComponents/IMG_Conversions.jsx';
+
+import AIQuestionGenerator from './AI_Integration/AIQuestionGenerator';
 
 import OtherPdfTools from './WorkingPages/OtherPdfTools';
-import OtherJpgTools from './WorkingPages/OtherJpgTools';
+import OtherIMGTools from './WorkingPages/OtherIMGTools';
 
 import { ThemeProvider } from './otherComponents/ThemeContext';
 
 import { AuthProvider } from './context/AuthContext';
-
 import useAuth from './hooks/useAuth';
 
 import Footer from './Footer/Footer';
 
-import AIQuestionGenerator from './AI_Integration/AIQuestionGenerator';
 import './Styles/App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -71,11 +68,18 @@ const AppContent = () => {
   const location = useLocation();
   const { user } = useAuth();
 
+  { /* Hide navigation bar on specific routes */ }
+   const hideNavRoutes = ['/login', '/signup', '/forgot-password'];
+  const shouldHideNav = hideNavRoutes.includes(location.pathname) || location.pathname.startsWith('/reset-password/');
+
   return (
     <div className="app-container">
-      <Navbar user={user} />
+
+       {!shouldHideNav && <Navbar user={user} />}
+
       
       <main className="main-content">
+        {/* Pages routing */}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about-us" element={<AboutUs />} />
@@ -84,23 +88,17 @@ const AppContent = () => {
           <Route path="/faqs" element={<FAQs />} />
           <Route path="/download" element={<DownloadPage />} />
           <Route path="/contact-us" element={<ContactUs />}/>
-          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgetPass />} />
+          <Route path="/reset-password/:token" element={<ResetPass />} />
+          <Route path="/dashboard" element={ <ProtectedRoute><Dashboard /></ProtectedRoute>} />
           
-          {/* Protected Dashboard Route */}
-          <Route 
-            path="/dashboard" 
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } 
-          />
-          
+           {/* Working - Pages routes */}
           <Route path="/other-pdf-tools" element={<OtherPdfTools />} />
-          <Route path="/other-jpg-tools" element={<OtherJpgTools />} />
+          <Route path="/other-img-tools" element={<OtherIMGTools />} />
           
-          {/* Conversion routes */}
+          {/* Document Conversion routes */}
           <Route path="/pdf-to-word" element={<PdfToDocx />} />
           <Route path="/pdf-to-presentation" element={<PdfToPptx />} />
           <Route path="/word-to-pdf" element={<DocxToPdf />} />
@@ -116,14 +114,34 @@ const AppContent = () => {
           <Route path="/unlock-pdf" element={<UnlockPdf />} />
 
           {/* Image conversion routes */}
-          <Route path="/pdf-to-jpg" element={<PdfToJpg />} />
-          <Route path="/word-to-jpg" element={<WordToJpg />} />
-          <Route path="/presentation-to-jpg" element={<PresentationToJpg />} />
-          <Route path="/bmp-to-jpg" element={<BmpToJpg />} />
-          <Route path="/png-to-jpg" element={<PngToJpg />} />
-          <Route path="/excel-to-jpg" element={<ExcelToJpg />} />
-
+          <Route path="/png-to-jpg" element={<PNGToJPG />} />
+          <Route path="/jpg-to-png" element={<JPGToPNG />} />
+          <Route path="/pdf-to-image" element={<PDFToImage />} />
+          <Route path="/word-to-image" element={<WordToImage />} />
+          <Route path="/presentation-to-image" element={<PowerpointToImage />} />
+          <Route path="/excel-to-image" element={<ExcelToImage />} />
+          <Route path="/bmp-to-image" element={<BMPToImage />} />
+          
+          {/* AI Integration routing */}
           <Route path="/ai-question-generator" element={<AIQuestionGenerator />} />
+
+          {/* Redirects routes */}
+          <Route path="/home" element={<Navigate to="/" replace />} />
+          <Route path="/pdf-to-jpg" element={<Navigate to="/pdf-to-image" replace />} />
+          <Route path="/pdf-to-png" element={<Navigate to="/pdf-to-image" replace />} />
+          
+          <Route path="/word-to-jpg" element={<Navigate to="/word-to-image" replace />} />
+          <Route path="/word-to-png" element={<Navigate to="/word-to-image" replace />} />
+          
+          <Route path="/excel-to-jpg" element={<Navigate to="/excel-to-image" replace />} />
+          <Route path="/excel-to-png" element={<Navigate to="/excel-to-image" replace />} />
+          
+          <Route path="/powerpoint-to-jpg" element={<Navigate to="/powerpoint-to-image" replace />} />
+          <Route path="/powerpoint-to-png" element={<Navigate to="/powerpoint-to-image" replace />} />
+          
+          <Route path="/bmp-to-jpg" element={<Navigate to="/bmp-to-image" replace />} />
+          <Route path="/bmp-to-png" element={<Navigate to="/bmp-to-image" replace />} />
+
         </Routes>
       </main>
       

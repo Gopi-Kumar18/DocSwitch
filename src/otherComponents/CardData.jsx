@@ -15,7 +15,7 @@ const CardData = [
     img: PdfToWordlogo,
     title: "PDF to Word",
     text: "Transform your PDF to Word format",
-    subtext: "Edit text and reuse content in Word easily.",
+    subtext: "Quickly edit and reuse PDF content in Word.",
     footerNote: "Click to convert"
   },
   {
@@ -23,7 +23,7 @@ const CardData = [
     img: PdfToPresentationlogo,
     title: "PDF to Presentation",
     text: "Create presentations from PDFs",
-    subtext: "Convert your documents into slide-ready visuals.",
+    subtext: "Turn PDFs into ready-to-use slides instantly.",
     footerNote: "Click to convert"
   },
   {
@@ -31,7 +31,7 @@ const CardData = [
     img: PdfToExcellogo,
     title: "PDF To SpreadSheets",
     text: "Convert PDFs to various SpreadSheets format.",
-    subtext: "Extract tabular data to Excel for quick analysis.",
+    subtext: "Extract tables from PDFs for easy analysis.",
     footerNote: "Click to convert"
   },
   {
@@ -39,7 +39,7 @@ const CardData = [
     img: WordToPdflogo,
     title: "Word to PDF",
     text: "Transform your Word to PDF",
-    subtext: "Preserve formatting and secure your documents.",
+    subtext: "Keep your Word formatting safe in PDF.",
     footerNote: "Click to convert"
   },
   {
@@ -47,7 +47,7 @@ const CardData = [
     img: PresentationToPdflogo,
     title: "Presentation to PDF",
     text: "Convert presentations to PDFs",
-    subtext: "Share slides with consistent formatting anywhere.",
+    subtext: "Share slides as PDFs with consistent layout.",
     footerNote: "Click to convert"
   },
   {
@@ -55,7 +55,7 @@ const CardData = [
     img: ExcelToCSVlogo,
     title: "SpreadSheets To CSV",
     text: "Convert spreadsheets to CSV",
-    subtext: "Export data into a clean, shareable format.",
+    subtext: "Export spreadsheet data to a simple CSV file.",
     footerNote: "Click to convert"
   },
   {
@@ -63,7 +63,7 @@ const CardData = [
     img: MergeDoclogo,
     title: "Merge PDFs",
     text: "Combine multiple DOCs into one",
-    subtext: "Merge files for streamlined sharing and storage.",
+    subtext: "Join multiple files into a single PDF easily.",
     footerNote: "Click to merge"
   },
   {
@@ -71,7 +71,7 @@ const CardData = [
     img: CompressPdflogo,
     title: "Compress PDF",
     text: "Compress an PDF file",
-    subtext: "Compress PDF for streamlined storage save.",
+    subtext: "Reduce PDF size for faster sharing.",
     footerNote: "Click to compress"
   },
   {
@@ -79,7 +79,7 @@ const CardData = [
     img: CompressPdflogo,
     title: "Create PDF",
     text: "Create PDF from any file",
-    subtext: "Create PDF for streamlined storage save.",
+    subtext: "Generate PDFs from your favorite files.",
     footerNote: "Click to create"
   },
   {
@@ -87,7 +87,7 @@ const CardData = [
     img: CompressPdflogo,
     title: "Split PDF",
     text: "Transform your PDF to Word format",
-    subtext: "Edit text and reuse content in Word easily.",
+    subtext: "Divide a PDF into separate pages or files.",
     footerNote: "Click to convert"
   },
   {
@@ -95,7 +95,7 @@ const CardData = [
     img: CompressPdflogo,
     title: "Apply OCR",
     text: "Transform your PDF to Word format",
-    subtext: "Edit text and reuse content in Word easily.",
+    subtext: "Make scanned PDFs searchable and editable.",
     footerNote: "Click to convert"
   },
   {
@@ -103,7 +103,7 @@ const CardData = [
     img: CompressPdflogo,
     title: "Protect PDF",
     text: "Protect your PDF files with a password ",
-    subtext: "Secure your documents with encryption.",
+    subtext: "Add password protection to your PDF files.",
     footerNote: "Click to convert"
   },
   {
@@ -111,7 +111,7 @@ const CardData = [
     img: CompressPdflogo,
     title: "Unlock Your PDF",
     text: "Unlock your PDF files ",
-    subtext: "Remove password protection from your PDFs.",
+    subtext: "Remove PDF passwords for easy access.",
     footerNote: "Click to convert"
   },
   {
@@ -119,58 +119,65 @@ const CardData = [
     img: CompressPdflogo,
     title: "AI Question Generator",
     text: "Generate Questions with AI",
-    subtext: "Generate questions from pdf using AI.",
-    footerNote: "Click to Generate"
-  },
-  
-   {
-    path: "/pdf-to-jpg",
-    img: CompressPdflogo,
-    title: "Convert PDF to JPG",
-    text: "Generate Questions with AI",
-    subtext: "Generate questions from pdf using AI.",
-    footerNote: "Click to Generate"
-  },
-   {
-    path: "/word-to-jpg",
-    img: CompressPdflogo,
-    title: "Convert Word to JPG",
-    text: "Generate Questions with AI",
-    subtext: "Generate questions from pdf using AI.",
-    footerNote: "Click to Generate"
-  },
-   {
-    path: "/presentation-to-jpg",
-    img: CompressPdflogo,
-    title: "Convert PPT to JPG",
-    text: "Generate Questions with AI",
-    subtext: "Generate questions from pdf using AI.",
+    subtext: "Create questions from PDFs using AI instantly.",
     footerNote: "Click to Generate"
   },
   {
-    path: "/bmp-to-jpg",
+    path: "/jpg-to-png",
     img: CompressPdflogo,
-    title: "Convert BMP to JPG",
-    text: "Generate Questions with AI",
-    subtext: "Generate questions from pdf using AI.",
-    footerNote: "Click to Generate"
-  },
-  {
-    path: "/excel-to-jpg",
-    img: CompressPdflogo,
-    title: "Convert Excel Sheets to JPG",
-    text: "Generate Questions with AI",
-    subtext: "Generate questions from pdf using AI.",
+    title: "Convert an JPG to PNG",
+    text: "Transform your JPG to PNG format",
+    subtext: "Switch JPG images to PNG with one click.",
     footerNote: "Click to Generate"
   },
   {
     path: "/png-to-jpg",
     img: CompressPdflogo,
     title: "Convert an PNG to JPG",
-    text: "Generate Questions with AI",
-    subtext: "Generate questions from pdf using AI.",
+    text: "Transform your PNG to JPG format",
+    subtext: "Convert PNG images to JPG in seconds.",
     footerNote: "Click to Generate"
-  }
+  },
+  {
+    path: "/pdf-to-image",
+    img: CompressPdflogo,
+    title: "Convert PDF to Image",
+    text: "Convert PDF to any Format of Image",
+    subtext: "Turn PDFs into images like JPG or PNG easily.",
+    footerNote: "Click to Generate"
+  },
+  {
+    path: "/word-to-image",
+    img: CompressPdflogo,
+    title: "Convert Word to Image",
+    text: "Convert Word to any Format of Image",
+    subtext: "Convert Word files to images for quick sharing.",
+    footerNote: "Click to Generate"
+  },
+  {
+    path: "/presentation-to-image",
+    img: CompressPdflogo,
+    title: "Convert Presentation to Image",
+    text: "Convert Presentation to any Format of Image",
+    subtext: "Save slides as images for easy previews.",
+    footerNote: "Click to Generate"
+  },
+  {
+    path: "/excel-to-image",
+    img: CompressPdflogo,
+    title: "Convert Excel to Image",
+    text: "Convert Excel to any Format of Image",
+    subtext: "Export spreadsheet data as clear images.",
+    footerNote: "Click to Generate"
+  },
+  {
+    path: "/bmp-to-image",
+    img: CompressPdflogo,
+    title: "Convert BMP to Image",
+    text: "Convert BMP to any Format of Image",
+    subtext: "Change BMP files to modern image formats fast.",
+    footerNote: "Click to Generate"
+  },
 ];
 
 export default CardData;

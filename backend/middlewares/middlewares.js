@@ -8,6 +8,7 @@ export const applyMiddlewares = (app) => {
 
    app.use(cors({
     origin: process.env.CLIENT_ORIGIN,
+    // origin: process.env.SECURE_CLIENT_ORIGIN,
     credentials: true,
   }));
 

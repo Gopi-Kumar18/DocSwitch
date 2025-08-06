@@ -40,8 +40,12 @@ export const AuthProvider = ({ children }) => {
   }
 };
 
+const forgotPassword = async (email) => {
+    return api.post('/auth/forgot-password', { email });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, signup, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, signup, login, logout, forgotPassword }}>
       {children}
     </AuthContext.Provider>
   );

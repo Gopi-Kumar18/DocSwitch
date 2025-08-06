@@ -3,7 +3,7 @@ import { express, multer } from '../utils/coreModules.js';
 
 import {
 
-  convertFile, adobeConverter, mergePdfs, downloadConvertedFile, adobeCompressor, adobeCreatePDF, splitPdf, ocr_pdf, protectPdf, removePass, convertImg 
+  convertFile, adobeConverter, mergePdfs, downloadConvertedFile, adobeCompressor, adobeCreatePDF, splitPdf, ocr_pdf, protectPdf, removePass, convertToJpg, convertToPng 
 
 }from '../controllers/routesHeader.js'; 
 
@@ -22,7 +22,9 @@ router.post('/ocr-convert', upload.single('file'), ocr_pdf); // Endpoint for OCR
 router.post('/protect', upload.single('file'), protectPdf); // Endpoint for PDF protection
 router.post('/unlock', upload.single('file'), removePass); // Endpoint for PDF unlocking
 
-router.post('/ccimgConvert', upload.single('file'), convertImg); // Endpoint for image conversion using CloudConvert
+router.post('/ccimgConvert/jpg', upload.single('file'), convertToJpg); // Endpoint for JPG image conversion using CloudConvert
+router.post('/ccimgConvert/png', upload.single('file'), convertToPng); // Endpoint for image conversion using CloudConvert
+
 
 router.get('/download', downloadConvertedFile); // Endpoint for file download
 

@@ -153,7 +153,8 @@ const AIQuestionGenerator = () => {
         doc.splitTextToSize(q.answer, 50),
       ]);
       doc.autoTable({ head, body, startY: 20 });
-      doc.save(`${sanitizeFilename}.pdf`);
+      const safeName = sanitizeFilename(pdfFile.name);
+      doc.save(`${safeName}`);
     } catch {
       setError("Couldn't download PDF.");
     }

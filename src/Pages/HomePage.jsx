@@ -74,7 +74,7 @@ const HomePage = () => {
 
       <h3 className="text-center" style={{ marginBottom: '0.3rem' }}>Image Op's</h3>
 
-      <h5 className="text-center" style={{ marginTop: '0.6rem' }}>JPG Converter</h5>
+      {/* <h5 className="text-center" style={{ marginTop: '0.6rem' }}>JPG Converter</h5> */}
 
 <div className="row justify-content-center mt-4">
   {CardData.slice(14, 16).map((card, index) => (
@@ -83,24 +83,11 @@ const HomePage = () => {
 
  
   <div className="col-auto">
-    <a href="/other-jpg-tools" className="arrow-inline">&#8594;</a>
+    <a href="/other-img-tools" className="arrow-inline">&#8594;</a>
   </div> 
 </div>
 
       <br />
-
-      <h5 className="text-center" style={{ marginTop: '0.6rem' }}>PNG Converter</h5>
-
-<div className="row justify-content-center mt-4">
-  {CardData.slice(14, 16).map((card, index) => (
-    <CardItem key={index} {...card} />
-  ))}
-
- 
-  <div className="col-auto">
-    <a href="/other-png-tools" className="arrow-inline">&#8594;</a>
-  </div> 
-</div>
 
     </div>
   );
