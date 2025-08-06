@@ -1,6 +1,6 @@
-DocSwitch
+**DocSwitch**
 
-DocSwitch is a powerful, web-based file conversion platform built using the MERN stack and modern DevOps practices. Convert documents and images between a variety of formats—PDF, Word, PowerPoint, Excel, CSV, BMP, PNG, JPG—and more & more, all with a simple drag-and-drop interface.
+*DocSwitch* is a powerful, web-based file conversion platform built using the MERN stack and modern DevOps practices. Convert documents and images between a variety of formats—PDF, Word, PowerPoint, Excel, CSV, BMP, PNG, JPG—and more & more, all with a simple drag-and-drop interface.
 
 
 🚀 Key Features
