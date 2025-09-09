@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import '../Styles/Navbar.css';
+import '../Styles/NavBar.css';
 import { ThemeContext } from '../otherComponents/ThemeContext';
 import useAuth from '../hooks/useAuth'; 
 
