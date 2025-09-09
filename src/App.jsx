@@ -42,7 +42,7 @@ import OtherIMGTools from './WorkingPages/OtherIMGTools';
 import MultimediaTools from './WorkingPages/MultimediaTools.jsx';
 
 import { ThemeProvider } from './otherComponents/ThemeContext';
-import FileUpload from './otherComponents/Fileupload.jsx';
+import FileUpload from './otherComponents/FileUpload.jsx';
 
 import { AuthProvider } from './context/AuthContext';
 import useAuth from './hooks/useAuth';
