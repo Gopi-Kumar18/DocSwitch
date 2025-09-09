@@ -1,0 +1,85 @@
+.drag-drop-zone {
+  border: 2px dashed transparent; 
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  background-color: #f8f9fa;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-direction: column;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+
+  background-image:
+    linear-gradient(#f8f9fa, #f8f9fa), 
+    linear-gradient(90deg, #007cf0, #7928ca, #ff0080); 
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+}
+
+
+
+
+.drag-drop-zone.active {
+  background-color: #e7f3ff;
+}
+
+
+body.dark-theme .drag-drop-zone {
+  background-color: #2b2b2b;
+  border: 2px dashed transparent;
+
+  background-image:
+    linear-gradient(#2b2b2b, #2b2b2b),
+    linear-gradient(90deg, #007cf0, #7928ca, #ff0080);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+
+  color: #f1f1f1;
+}
+
+body.dark-theme .drag-drop-zone.active {
+  background-color: #1e1e1e;
+}
+
+.file-input-hidden {
+  display: none;
+}
+
+.drag-instruction {
+  pointer-events: none;
+}
+
+.drag-subtext {
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: #6c757d;
+}
+
+body.dark-theme .drag-subtext {
+  color: #b0b0b0;
+}
+
+.selected-file-label {
+  margin-top: 10px;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: dimgray;
+}
+
+body.dark-theme .selected-file-label {
+  color: #dddddd;
+}
+
+.selected-file-name {
+  font-size: 0.9em;
+  font-weight: 500;
+  background: linear-gradient(90deg, #00eaff, #007cf0, #7b51a4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

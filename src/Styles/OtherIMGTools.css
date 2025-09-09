@@ -1,0 +1,34 @@
+/* --- Container to center the slider --- */
+.image-tools-section-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+/* --- Slider Container --- */
+.image-slider-container {
+  position: relative;
+  max-width: 800px; /* You can adjust this size */
+  width: 90%;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Individual Slide Styles --- */
+.image-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out; /* Slower fade for a smoother effect */
+}
+
+/* --- Active Slide Style --- */
+.image-slide.active {
+  opacity: 1;
+}

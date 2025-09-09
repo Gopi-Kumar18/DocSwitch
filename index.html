@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DocSwitch - File Converter App</title>
+
+  <!-- External Fonts and Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous"
+  />
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script&family=Great+Vibes&family=Indie+Flower&family=Satisfy&family=Kaushan+Script&display=swap" rel="stylesheet">
+
+  <script>
+    (function () {
+      const theme = localStorage.getItem('darkMode');
+      if (theme === 'true') {
+        document.documentElement.classList.add('dark-theme');
+      } else {
+        document.documentElement.classList.add('light-theme');
+      }
+    })();
+  </script>
+
+ 
+  <style>
+    html.dark-theme {
+      background-color: #121212;
+      color: #f1f1f1;
+    }
+  </style>
+
+</head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+
+    <!-- <script src="js/script.js"></script> -->
+  </body>
+</html>

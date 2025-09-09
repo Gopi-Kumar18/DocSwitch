@@ -1,0 +1,109 @@
+
+ :root {
+  --footer-bg-light: #f5f7fa;
+  --footer-text-light: #2d3748;
+  --footer-bg-dark: #121212;
+  --footer-text-dark: #ffffff;
+  --accent-color: #4299e1;
+  --section-heading-light: #1a365d;
+  --link-color-light: #4a5568;
+  --border-color-light: #e2e8f0;
+}
+
+.footer {
+  position: relative;
+  padding: 3rem 0;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: black;
+}
+
+.footer-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 3rem;
+  padding: 0 2rem;
+}
+
+.footer-section h3 {
+  color: lightblue;
+  margin-bottom: 0.3rem;
+  position: relative;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 1rem;
+}
+
+.footer-section li {
+  margin-bottom: 0.6rem;
+}
+
+.footer-section a {
+  text-decoration: none;
+}
+
+.social-media-links {
+  display: flex;
+  gap: 1.4rem;
+}
+
+.social-media-links a {
+  font-size: 1.5rem;
+}
+
+.social-media-links a:hover {
+  opacity: 0.8;
+  transform: translateY(-2px);
+}
+
+.light-theme .footer-section a,
+.dark-theme .footer-section a {
+  color: var(--link-color-light);
+}
+
+.light-theme .footer-section a:hover,
+.dark-theme .footer-section a:hover {
+  color: #4299e1;
+}
+
+.social-media-links a[href*="linkedin"]:hover .fab { color: #0A66C2 !important; }
+.social-media-links a[href*="instagram"]:hover .fab { color: #E1306C !important; }
+.dark-theme .social-media-links a[href*="twitter"]:hover .fab { color: whitesmoke; }
+.dark-theme .social-media-links a[href*="github"]:hover .fab { color: whitesmoke; }
+
+.footer-bottom {
+  padding: 10rem 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.follow-us-section .section-header {
+  margin-bottom: 1.3rem;
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    gap: 2rem;
+    padding: 0 1.5rem;
+    text-align: center;
+  }
+
+  .social-media-links {
+    justify-content: center;
+  }
+}
+
+
+
+
+
+

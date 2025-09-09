@@ -1,0 +1,35 @@
+/* --- Container to center the slider on the page --- */
+.pdf-tools-section-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+/* --- Slider Container (The most important part) --- */
+/* This contains the images and gives them a boundary */
+.pdf-slider-container {
+  position: relative; /* This is the anchor for the absolute-positioned images */
+  max-width: 600px;  /* Adjust the max size as needed */
+  width: 90%;        /* Takes up 90% of the available width */
+  overflow: hidden;  /* Hides parts of images that are outside this container */
+  border-radius: 12px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Individual Slide Styles --- */
+.pdf-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the area without distortion */
+  opacity: 0;        /* Makes the slide invisible by default */
+  transition: opacity 0.8s ease-in-out; /* Smooth fade effect */
+}
+
+/* --- Active Slide Style --- */
+.pdf-slide.active {
+  opacity: 1; /* Makes the current slide visible */
+}
