@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Styles/HomePage.css';
@@ -6,21 +5,22 @@ import '../Styles/HomePage.css';
 import CardItem from '../otherComponents/CardItem';
 import CardData from '../otherComponents/CardData';
 
+
+import pdfSlide1 from '../assets/pdf-2.png';
+import pdfSlide2 from '../assets/pdf-1.jpg';
+import imgToolkitBanner from '../assets/image-tkit.jpg';
+import multimediaBanner from '../assets/mm-banner.png';
+import aiGeneratorBanner from '../assets/ai-question-gen.png';
+
 const conversionTypes = ["PDF", "DOCX", "PPTX", "EXCEL", "JPG", "PNG", "AI QA Generator", "OCR", "COMPRESS", "MERGE", "SPLIT", "WATERMARK", "SIGN"];
 
-const pdfsliderImages = [
-  "src/assets/pdf-2.png",
-  "src/assets/pdf-1.jpg",
-  
-];
-const imgSliderImg = ["src/assets/image-tkit.jpg"];
 
-const multimediaBannerImg = ["src/assets/mm-banner.png"];
+const pdfsliderImages = [pdfSlide1, pdfSlide2];
 
 const HomePage = () => {
   const [currentConversion, setCurrentConversion] = useState(conversionTypes[0]);
   const [fade, setFade] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0); 
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     const textInterval = setInterval(() => {
@@ -39,7 +39,7 @@ const HomePage = () => {
   useEffect(() => {
     const slideInterval = setInterval(() => {
       setCurrentSlide(prevSlide => (prevSlide + 1) % pdfsliderImages.length);
-    }, 5000); 
+    }, 5000);
     return () => clearInterval(slideInterval);
   }, []);
 
@@ -48,7 +48,7 @@ const HomePage = () => {
       <header className="text-center mt-5">
         <div className="display-6">From PDFs to Everything – Instantly</div>
         <p className="lead">
-          Transform your documents to {" "}
+          Transform your documents to{" "}
           <span className={`conversion-text ${fade ? 'fade-out' : 'fade-in'}`}>{currentConversion}</span>{" "}
           effortlessly. All tools are FREE and user-friendly!
         </p>
@@ -80,7 +80,7 @@ const HomePage = () => {
           {pdfsliderImages.map((src, index) => (
             <img
               key={index}
-              src={src}
+              src={src} 
               alt={`PDF Tool Slide ${index + 1}`}
               className={`pdf-slide ${index === currentSlide ? 'active' : ''}`}
             />
@@ -90,11 +90,10 @@ const HomePage = () => {
 
       <br /><br />
 
-      
       <div className="feature-section image-ops-section">
         <div className="feature-media-container">
           <img
-            src={imgSliderImg[0]} 
+            src={imgToolkitBanner} 
             alt="Image Operations"
           />
         </div>
@@ -114,7 +113,6 @@ const HomePage = () => {
       
       <br/>
 
-      {/* --- AI Section (Card Left, Media Right) --- */}
       <div className="feature-section ai-section">
         <div className="feature-content-column">
           <h3 className="feature-heading">Work With AI</h3>
@@ -131,7 +129,7 @@ const HomePage = () => {
         </div>
         <div className="feature-media-container">
           <img
-            src="src/assets/ai-question-gen.png"
+            src={aiGeneratorBanner} 
             alt="AI illustrations"
           />
         </div>
@@ -142,7 +140,7 @@ const HomePage = () => {
       <div className="feature-section multimedia-section">
         <div className="feature-media-container">
           <img
-            src={multimediaBannerImg[0]} 
+            src={multimediaBanner} 
             alt="Multimedia Tools"
           />
         </div>
@@ -165,4 +163,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
